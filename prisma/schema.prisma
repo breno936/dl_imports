@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product{
+  id Int @id @default(autoincrement())
+  name String
+  price Decimal
+  description String
+  tag String
+  category String
+  pictures Pictures[]
+}
+
+model Pictures{
+  id Int @id @default(autoincrement())
+  product Product @relation(fields: [productId], references: [id])
+  productId Int
+  destaques Destaques @relation(fields: [destaquesId], references: [id])
+  destaquesId Int
+  novidades Novidades @relation(fields: [novidadesId], references: [id])
+  novidadesId Int
+  maisVendidos MaisVendidos @relation(fields: [maisVendidosId], references: [id])
+  maisVendidosId Int
+}
+
+model Destaques{
+  id Int @id @default(autoincrement())
+  name String
+  price Decimal
+  description String
+  category String
+  tag String
+  pictures Pictures[]
+}
+
+model CardDest{
+  id Int @id @default(autoincrement())
+  title String
+  subTitle String
+  picture String
+}
+
+model Novidades{
+  id Int @id @default(autoincrement())
+  name String
+  price Decimal
+  description String
+  category String
+  tag String
+  pictures Pictures[]
+}
+
+model MaisVendidos{
+  id Int @id @default(autoincrement())
+  name String
+  price Decimal
+  description String
+  category String
+  tag String
+  pictures Pictures[]
+}
+
+model DestBanner{
+  id Int @id @default(autoincrement())
+  title String
+  picture String
+}
+
+model SlideHome{
+  id Int @id @default(autoincrement())
+  picture String
+  title String
+  subTitle String
+  textButton String
+  linkButton String
+}
