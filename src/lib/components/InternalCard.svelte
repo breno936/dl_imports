@@ -45,18 +45,6 @@
       background-color: rgb(0,0,0,0.8);
       font-family: "Roboto-Bold";
     }
-    .description h3{
-        font-family: "Roboto-Light";
-    }
-
-    .description h1{
-        font-family: "Roboto-Bold";
-        font-size: 26px;
-    }
-
-    h1{
-        font-family: "Roboto-Black-Italic";
-    }
     /* .mySwiperInternal2 {
       width: 100%;
       height: 100%;
