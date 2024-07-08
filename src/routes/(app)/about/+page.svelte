@@ -16,7 +16,7 @@
     <h1 class="text-[32px]" style="font-family: Roboto-Bold;">Fundador</h1><br/>
     Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado. Se popularizou na década de 60, quando a Letraset lançou decalques contendo passagens de Lorem Ipsum, e mais recentemente quando passou a ser integrado a softwares de editoração eletrônica como Aldus PageMaker.</div>
 <div class="w-4/5 lg:w-2/5 mt-10 lg:mt-0 bg-black overflow-hidden rounded-2xl h-[500px]">
-<img src="/static/img/WhatsApp Image 2024-07-02 at 13.37.37.jpeg" class="w-full h-full"/>
+<img src="/img/WhatsApp Image 2024-07-02 at 13.37.37.jpeg" class="w-full h-full"/>
 </div>
 </div>
 

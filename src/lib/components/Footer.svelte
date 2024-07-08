@@ -8,33 +8,33 @@
       <div class="flex flex-col lg:flex-row w-full justify-center lg:justify-between lg:mx-16 items-center">
         <div class="w-[200px] h-[200px] lg:w-[285px] lg:h-[285px] overflow-hidden">
         <a href="/">
-        <img src="/static/img/WhatsApp Image 2024-06-04 at 19.12.24.jpeg" alt="" class="transition-all cursor-pointer logoFooter w-full h-full" />
+        <img src="/img/WhatsApp Image 2024-06-04 at 19.12.24.jpeg" alt="" class="transition-all cursor-pointer logoFooter w-full h-full" />
         </a>
         </div>
         <div class="text-center lg:text-left">
           <span class="text-[30px] lg:text-[47px] font-bold">MÍDIAS</span>
           <div class="flex flex-col gap-2 items-center lg:items-start mt-4">
             <a href="https://www.instagram.com/_dlvendas" target="_blank" rel="noopener noreferrer" class="flex gap-2 items-center">
-              <img src="/static/img/instaYellow.png" alt="Instagram" class="w-7 h-7" />
+              <img src="/img/instaYellow.png" alt="Instagram" class="w-7 h-7" />
               <span>@_dlvendas</span>
             </a>
             <a href="https://www.instagram.com/maurilio.st" target="_blank" rel="noopener noreferrer" class="flex gap-2 items-center">
-              <img src="/static/img/instaYellow.png" alt="Instagram" class="w-7 h-7" />
+              <img src="/img/instaYellow.png" alt="Instagram" class="w-7 h-7" />
               <span>@maurilio.st</span>
             </a>
             <a href="https://www.instagram.com/dlimports_reserva" target="_blank" rel="noopener noreferrer" class="flex gap-2 items-center">
-              <img src="/static/img/instaYellow.png" alt="Instagram" class="w-7 h-7" />
+              <img src="/img/instaYellow.png" alt="Instagram" class="w-7 h-7" />
               <span>dlimports_reserva</span>
             </a>
             <a href="https://wa.me/+5511989098443" target="_blank" class="flex gap-2 items-center mt-4">
-              <img src="/static/img/whatsappYellow.png" alt="WhatsApp" class="w-7 h-7" />
+              <img src="/img/whatsappYellow.png" alt="WhatsApp" class="w-7 h-7" />
               <span>(11) 9 8909-8443</span>
             </a>
           </div>
           <div class="text-white mt-10">
             <span class="text-[30px] lg:text-[40px] font-bold">LOCALIZAÇÃO</span>
             <div class="flex gap-3 items-center mt-2">
-              <img src="/static/img/pinYellow.png" alt="Localização" class="w-7 h-7" />
+              <img src="/img/pinYellow.png" alt="Localização" class="w-7 h-7" />
               <span>R. Glauco Antônio Galli, 423 - Jardim Palmira</span>
             </div>
           </div>

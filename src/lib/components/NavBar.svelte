@@ -87,13 +87,13 @@
         <div class="w-1/3 pr-6 flex justify-end socialIcons">
             <a href="https://wa.me/+5511989098443" target="_blank">
                 <img
-                  src="/static/img/whatsapp-pb.png"
+                  src="/img/whatsapp-pb.png"
                   class="w-5 h-5 mr-3 cursor-pointer transition-all"
                 />
                 </a>
                 <a href="https://www.instagram.com/_dlvendas?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">
                 <img
-                  src="/static/img/white-instagram-icon-instagram-logo-instagram-instagram-icon-white-11553385558pigg7yyye3.webp"
+                  src="/img/white-instagram-icon-instagram-logo-instagram-instagram-icon-white-11553385558pigg7yyye3.webp"
                   class="w-5 h-5 cursor-pointer transition-all"
                 />
                 </a>
@@ -108,7 +108,7 @@
         <div class="w-2/12 pl-10">
             <div class="w-32 h-auto">
                 <a href="/">
-                 <img src="/static/img/WhatsApp Image 2024-06-04 at 19.12.24.jpeg" class=" w-full h-full"/>
+                 <img src="/img/WhatsApp Image 2024-06-04 at 19.12.24.jpeg" class=" w-full h-full"/>
                 </a>
             </div>
         </div>
@@ -143,7 +143,7 @@
         <div class="w-2/12 pl-10">
             <div class="w-20 h-auto">
                 <a href="/">
-                 <img src="/static/img/WhatsApp Image 2024-06-04 at 19.12.24.jpeg" class=" w-full h-full"/>
+                 <img src="/img/WhatsApp Image 2024-06-04 at 19.12.24.jpeg" class=" w-full h-full"/>
                 </a>
             </div>
         </div>

@@ -35,7 +35,7 @@
             <a href=""><button class="mt-8 py-2 px-10 border-2 border-transparent bg-black text-white rounded-xl text-sm transition-all slideButton">TESTE</button></a>
           </div>
         
-        <img src="/static/img/2024-06-05_20h51_04.png" class="w-full h-full"/>
+        <img src="/img/2024-06-05_20h51_04.png" class="w-full h-full"/>
     
         </div>
         <div class="swiper-slide">
@@ -46,7 +46,7 @@
               <a href=""><button class="mt-8 py-2 px-10 border-2 border-transparent bg-black text-white rounded-xl text-sm transition-all slideButton">TESTE</button></a>
             </div>
           
-          <img src="/static/img/2024-06-05_20h51_04.png" class="w-full h-full"/>
+          <img src="/img/2024-06-05_20h51_04.png" class="w-full h-full"/>
       
           </div>
         <!-- {/each} -->
