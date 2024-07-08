@@ -237,7 +237,7 @@
       </div>
     </div>
 
-    <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <main class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <div class="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
         <h1 class="text-4xl font-bold tracking-tight text-gray-900">Blusas</h1>
 
@@ -439,8 +439,8 @@
 
           <!-- Product grid -->
           <div class="lg:col-span-3">
-            <div class="flex mt-10 h-fit w-full justify-evenly gap-y-8 flex-wrap">
-              <div class="w-5/12 md:w-[30%] h-[400px] relative">
+            <div class="flex mt-10 h-fit w-full justify-evenly gap-x-1 gap-y-8 flex-wrap">
+              <div class="w-[48%] md:w-[30%] h-[400px] relative">
                 <div class="card-product h-full rounded-lg flex flex-col">
                   <div class="w-full h-4/6 block relative">
                       <InternalCard idSwiper={"1"}/>
@@ -452,7 +452,7 @@
                 </div>
               </div>
               
-              <div class="w-5/12 md:w-[30%] full h-[400px] relative">
+              <div class="w-[48%] md:w-[30%] full h-[400px] relative">
                 <div class="card-product h-full rounded-lg flex flex-col">
                   <div class="w-full h-4/6">
                       <InternalCard idSwiper={"2"}/>
@@ -464,7 +464,7 @@
                 </div>
               </div>
               
-              <div class="w-5/12 md:w-[30%] h-[400px] relative">
+              <div class="w-[48%] md:w-[30%] h-[400px] relative">
                 <div class="card-product h-full rounded-lg flex flex-col">
                   <div class="w-full h-4/6">
                       <InternalCard idSwiper={"3"}/>
