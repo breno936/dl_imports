@@ -25,7 +25,7 @@
 
 <div class="w-full h-full ml-auto mr-auto">
     <div class="swiper mySwiperInternal{idSwiper} h-full w-full">
-      <div class="absolute px-6 py-2 rounded-xl text-[12px] tagDestaque text-white top-[84%] z-20 left-3">ÚLTIMAS 3 UNIDADES</div>
+      <div class="absolute px-3 sm:px-6 py-2 rounded-xl text-[12px] tagDestaque text-white top-[84%] z-20 left-3">ÚLTIMAS 3 UNIDADES</div>
 
         <div class="swiper-wrapper">
 
