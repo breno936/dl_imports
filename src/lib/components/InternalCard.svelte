@@ -30,10 +30,10 @@
         <div class="swiper-wrapper">
 
           <div class="swiper-slide text-center text-[18px] bg-white flex justify-center items-center h-[90%] w-full">
-            <img class="h-full w-full block object-cover" src="static/img/447693430_18436337788059327_5379856894946159290_n.jpg"/>
+            <img class="h-full w-full block object-cover" src="/img/447693430_18436337788059327_5379856894946159290_n.jpg"/>
           </div>
-          <div class="swiper-slide text-center text-[18px] bg-white flex justify-center items-center h-[90%] w-full"><img class="h-full w-full block object-cover" src="static/img/415274231_18404092558059327_213975641561124811_n.jpg"/></div>
-          <div class="swiper-slide text-center text-[18px] bg-white flex justify-center items-center h-[90%] w-full"><img class="h-full w-full block object-cover" src="static/img/bones.jpg"/></div>
+          <div class="swiper-slide text-center text-[18px] bg-white flex justify-center items-center h-[90%] w-full"><img class="h-full w-full block object-cover" src="/img/415274231_18404092558059327_213975641561124811_n.jpg"/></div>
+          <div class="swiper-slide text-center text-[18px] bg-white flex justify-center items-center h-[90%] w-full"><img class="h-full w-full block object-cover" src="/img/bones.jpg"/></div>
      
         </div>
         <div class="swiper-button-next swiper-button-next{idSwiper}"></div>

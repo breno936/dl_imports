@@ -136,14 +136,14 @@
     }
    
     #card1{
-        background-image: url("static/img/417006646_18405483268059327_6530026535263804862_n.jpg");
+        background-image: url("/img/417006646_18405483268059327_6530026535263804862_n.jpg");
         background-repeat: no-repeat;
         background-size: cover;
         left: -30%;
         opacity: 0;
     }
     #card2{
-        background-image: url("static/img/419752615_18407757085059327_2323054749524548969_n.jpg");
+        background-image: url("/img/419752615_18407757085059327_2323054749524548969_n.jpg");
         background-repeat: no-repeat;
         background-size: cover;
         left: 30%;
