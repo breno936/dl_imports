@@ -1,15 +1,10 @@
 node_modules
 
-/dev.db
-**/(admin)
-**/api
-/prisma
 # Output
 .output
 .vercel
 /.svelte-kit
 /build
-**/prisma.ts
 
 # OS
 .DS_Store
