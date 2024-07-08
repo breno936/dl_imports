@@ -66,7 +66,7 @@
     </ul>
     </div>
   </div>
-  <div class="flex h-16 w-full bg-[#FFBF00] text-sm items-center justify-center gap-28 text-black endFooter">
+  <div class="flex h-fit py-4 w-full bg-[#FFBF00] flex-col md:flex-row text-sm items-center justify-center gap-4 md:gap-28 text-black endFooter">
     <span>©2024 DL Imports</span>
     <span>Desenvolvido por D&B Softwares - Todos os direitos reservados</span>
   </div>
