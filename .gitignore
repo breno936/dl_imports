@@ -1,6 +1,8 @@
 node_modules
 
 /dev.db
+/(admin)
+/prisma
 # Output
 .output
 .vercel
