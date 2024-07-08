@@ -40,7 +40,7 @@
   </script>
 
 
-<div class="w-4/6 h-[500px] ml-auto mr-auto mt-24 mb-24">
+<div class="w-4/6 h-[500px] ml-auto mr-auto mt-24 mb-40">
     <h1 class="text-[40px]">MAIS VENDIDOS</h1>
         <div class="swiper mySwiperVendidos">
             <div class="swiper-wrapper pt-6 pl-1">
