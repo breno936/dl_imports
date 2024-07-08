@@ -8,6 +8,7 @@ node_modules
 .vercel
 /.svelte-kit
 /build
+**/prisma.ts
 
 # OS
 .DS_Store
