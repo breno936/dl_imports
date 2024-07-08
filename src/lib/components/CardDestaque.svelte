@@ -73,7 +73,7 @@
 
 <div class="bg-black h-[600px] top-[-300px] w-full relative divCorte">
 </div>
-<div id="blackSection" class="bg-black w-full box-border pb-10 px-44 top-[-300px] relative">
+<div id="blackSection" class="bg-black w-full overflow-hidden box-border pb-10 px-10 lg:px-44 top-[-300px] relative">
     <svg
        version="1.0"
        width="953.000000pt"
@@ -117,13 +117,13 @@
           />
     </svg>
     
-        <div id="card1" bind:this={card1} class="w-2/5 h-[500px] mb-10 bg-green-50 relative cursor-pointer card">
+        <div id="card1" bind:this={card1} class="w-full md:w-3/5 xl:w-2/5 h-[500px] mb-10 bg-green-50 relative cursor-pointer card">
         <div class="description w-full h-2/6 bottom-0 transition-all absolute text-center">
             <h1 class="text-[#FFBF00] text-[60px] transition-all">DJ ARANA</h1>
             <h2 class="text-white transition-all">Conjunto Andy</h2>
         </div>
     </div>
-    <div id="card2" bind:this={card2} class="w-2/5 ml-auto mt-24 h-[500px] mb-10 bg-green-50 cursor-pointer relative card">
+    <div id="card2" bind:this={card2} class="w-full md:w-3/5 xl:w-2/5 ml-auto mt-24 h-[500px] mb-10 bg-green-50 cursor-pointer relative card">
         <div class="description transition-all w-full h-2/6 bottom-0 absolute text-center">
             <h1 class="text-[#FFBF00] text-[60px] transition-all">4 POR 2</h1>
             <h2 class="text-white">Cool Cats</h2>
@@ -149,6 +149,7 @@
         left: 30%;
         opacity: 0;
     }
+
     .animationPathDraw,
 	  :global(#blackSection .animationPathDraw){
       animation: dash 7s linear forwards;
@@ -187,7 +188,7 @@
     .imgBackDL{
         width: 100%;
         height: 100%;
-        top:-80px;
+        top:-40px;
     }
 
 

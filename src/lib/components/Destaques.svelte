@@ -10,10 +10,24 @@
       slidesPerView: 3,
       spaceBetween: 30,
       loop:true,
-      grabCursor: false,
+      grabCursor: true,
       navigation: {
         nextEl: ".swiper-button-nextDestaques",
         prevEl: ".swiper-button-prevDestaques",
+      },
+      breakpoints: {
+        0:{
+          slidesPerView: 1,
+          spaceBetween: 20,
+        },
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 40,
+        },
+        1024: {
+          slidesPerView: 3,
+          spaceBetween: 50,
+        },
       },
     //   pagination: {
     //     el: ".swiper-pagination",
@@ -53,6 +67,16 @@
               <div class="swiper-slide rounded-lg flex flex-col">
                 <div class="w-full h-4/6">
                     <InternalCard idSwiper={"3"}/>
+                </div>
+                <div class="w-full h-2/6 text-center description">
+                    <h3>Moletom Lacoste branco e azul</h3>
+                    <h1 class="mt-6">R$180,00</h1>
+                </div>
+              </div>
+
+              <div class="swiper-slide rounded-lg flex flex-col">
+                <div class="w-full h-4/6">
+                    <InternalCard idSwiper={"13"}/>
                 </div>
                 <div class="w-full h-2/6 text-center description">
                     <h3>Moletom Lacoste branco e azul</h3>

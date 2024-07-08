@@ -5,6 +5,7 @@
   let hiddenFilter1:boolean = true;
   let hiddenFilter2:boolean = true;
   let hiddenFilter3:boolean = true;
+  let hiddenFilterMobile:boolean = true;
   </script>
   
 <div class="divTopo"></div>
@@ -38,7 +39,7 @@
 
       Off-canvas filters for mobile, show/hide based on off-canvas filters state.
     -->
-    <div class="relative z-40 lg:hidden" role="dialog" aria-modal="true">
+    <div class:hidden={hiddenFilterMobile} class="relative z-40 lg:hidden" role="dialog" aria-modal="true">
       <!--
         Off-canvas menu backdrop, show/hide based on off-canvas menu state.
 
@@ -51,7 +52,7 @@
       -->
       <div class="fixed inset-0 bg-black bg-opacity-25" aria-hidden="true"></div>
 
-      <div class="fixed inset-0 z-40 flex">
+      <div class="fixed inset-0 z-50 flex">
         <!--
           Off-canvas menu, show/hide based on off-canvas menu state.
 
@@ -65,7 +66,7 @@
         <div class="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
           <div class="flex items-center justify-between px-4">
             <h2 class="text-lg font-medium text-gray-900">Filters</h2>
-            <button type="button" class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400">
+            <button type="button" on:click={() => {hiddenFilterMobile = !hiddenFilterMobile}} class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400">
               <span class="sr-only">Close menu</span>
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -279,7 +280,7 @@
           </div>
 
 
-          <button type="button" class="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden">
+          <button type="button" on:click={() => {hiddenFilterMobile = !hiddenFilterMobile}} class="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden">
             <span class="sr-only">Filters</span>
             <svg class="h-5 w-5" aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 01.628.74v2.288a2.25 2.25 0 01-.659 1.59l-4.682 4.683a2.25 2.25 0 00-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 018 18.25v-5.757a2.25 2.25 0 00-.659-1.591L2.659 6.22A2.25 2.25 0 012 4.629V2.34a.75.75 0 01.628-.74z" clip-rule="evenodd" />
@@ -438,8 +439,8 @@
 
           <!-- Product grid -->
           <div class="lg:col-span-3">
-            <div class="flex mt-10 h-[600px] w-full justify-evenly">
-              <div class="w-3/12 h-[400px] relative">
+            <div class="flex mt-10 h-[600px] w-full justify-evenly gap-y-8 flex-wrap">
+              <div class="w-5/12 md:w-[30%] h-[400px] relative">
                 <div class="card-product h-full rounded-lg flex flex-col">
                   <div class="w-full h-4/6 block relative">
                       <InternalCard idSwiper={"1"}/>
@@ -451,7 +452,7 @@
                 </div>
               </div>
               
-              <div class="w-3/12 full h-[400px] relative">
+              <div class="w-5/12 md:w-[30%] full h-[400px] relative">
                 <div class="card-product h-full rounded-lg flex flex-col">
                   <div class="w-full h-4/6">
                       <InternalCard idSwiper={"2"}/>
@@ -463,7 +464,7 @@
                 </div>
               </div>
               
-              <div class="w-3/12 h-[400px] relative">
+              <div class="w-5/12 md:w-[30%] h-[400px] relative">
                 <div class="card-product h-full rounded-lg flex flex-col">
                   <div class="w-full h-4/6">
                       <InternalCard idSwiper={"3"}/>
