@@ -439,7 +439,7 @@
 
           <!-- Product grid -->
           <div class="lg:col-span-3">
-            <div class="flex mt-10 h-[600px] w-full justify-evenly gap-y-8 flex-wrap">
+            <div class="flex mt-10 h-fit w-full justify-evenly gap-y-8 flex-wrap">
               <div class="w-5/12 md:w-[30%] h-[400px] relative">
                 <div class="card-product h-full rounded-lg flex flex-col">
                   <div class="w-full h-4/6 block relative">
