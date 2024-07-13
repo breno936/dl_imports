@@ -149,9 +149,9 @@
           <li><a href="/products/6" data-sveltekit-reload class="transition-all cursor-pointer">CAMISAS</a></li>
           <li><a href="/products/5" data-sveltekit-reload class="transition-all cursor-pointer">POLOS</a></li>
           <li><a href="/products/3" data-sveltekit-reload class="transition-all cursor-pointer">CHINELOS</a></li>
-          <li><a href="/products/2" data-sveltekit-reload class="transition-all cursor-pointer">TÊNIS</a></li>
+          <li><a href="/products/1" data-sveltekit-reload class="transition-all cursor-pointer">TÊNIS</a></li>
           <li><a href="/products/4" data-sveltekit-reload class="transition-all cursor-pointer">BONÉS</a></li>
-          <li><a href="/products/1" data-sveltekit-reload class="transition-all cursor-pointer">BLUSAS</a></li>
+          <li><a href="/products/2" data-sveltekit-reload class="transition-all cursor-pointer">BLUSAS</a></li>
         </ul>
         </li>
         <li class="mr-6"><a class="transition-all cursor-pointer">AVALIAÇÕES</a></li>
@@ -194,9 +194,9 @@
             <li><a href="/products/6" data-sveltekit-reload class="transition-all cursor-pointer">CAMISAS</a></li>
             <li><a href="/products/5" data-sveltekit-reload class="transition-all cursor-pointer">POLOS</a></li>
             <li><a href="/products/3" data-sveltekit-reload class="transition-all cursor-pointer">CHINELOS</a></li>
-            <li><a href="/products/2" data-sveltekit-reload class="transition-all cursor-pointer">TÊNIS</a></li>
+            <li><a href="/products/1" data-sveltekit-reload class="transition-all cursor-pointer">TÊNIS</a></li>
             <li><a href="/products/4" data-sveltekit-reload class="transition-all cursor-pointer">BONÉS</a></li>
-            <li><a href="/products/1" data-sveltekit-reload class="transition-all cursor-pointer">BLUSAS</a></li>
+            <li><a href="/products/2" data-sveltekit-reload class="transition-all cursor-pointer">BLUSAS</a></li>
           </ul></li>
         <li class="mr-6"><a class="transition-all cursor-pointer">AVALIAÇÕES</a></li>
         <li class="mr-6"><a href="/about" class="transition-all cursor-pointer">SOBRE NÓS</a></li>
@@ -225,9 +225,9 @@
           <li><a href="/products/6" data-sveltekit-reload on:click={collapseNav} class="transition-all cursor-pointer">CAMISAS</a></li>
           <li><a href="/products/5" data-sveltekit-reload on:click={collapseNav} class="transition-all cursor-pointer">POLOS</a></li>
           <li><a href="/products/3" data-sveltekit-reload on:click={collapseNav} class="transition-all cursor-pointer">CHINELOS</a></li>
-          <li><a href="/products/2" data-sveltekit-reload on:click={collapseNav} class="transition-all cursor-pointer">TÊNIS</a></li>
+          <li><a href="/products/1" data-sveltekit-reload on:click={collapseNav} class="transition-all cursor-pointer">TÊNIS</a></li>
           <li><a href="/products/4" data-sveltekit-reload on:click={collapseNav} class="transition-all cursor-pointer">BONÉS</a></li>
-          <li><a href="/products/1" data-sveltekit-reload on:click={collapseNav} class="transition-all cursor-pointer">BLUSAS</a></li>
+          <li><a href="/products/2" data-sveltekit-reload on:click={collapseNav} class="transition-all cursor-pointer">BLUSAS</a></li>
         </ul></li>
       <li class="mt-4"><a href="" on:click={collapseNav}>AVALIAÇÕES</a></li>
       <li class="mt-4"><a href="/about" on:click={collapseNav}>SOBRE NÓS</a></li>

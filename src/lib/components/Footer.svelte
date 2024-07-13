@@ -59,9 +59,9 @@
       <li><a href="/products/6" data-sveltekit-reload class="cursor-pointer">CAMISAS</a></li>
       <li><a href="/products/5" data-sveltekit-reload class="cursor-pointer">POLOS</a></li>
       <li><a href="/products/3" data-sveltekit-reload class="cursor-pointer">CHINELOS</a></li>
-      <li><a href="/products/2" data-sveltekit-reload class="cursor-pointer">TÊNIS</a></li>
+      <li><a href="/products/1" data-sveltekit-reload class="cursor-pointer">TÊNIS</a></li>
       <li><a href="/products/4" data-sveltekit-reload class="cursor-pointer">BONÉS</a></li>
-      <li><a href="/products/1" data-sveltekit-reload class="cursor-pointer">BLUSAS</a></li>
+      <li><a href="/products/2" data-sveltekit-reload class="cursor-pointer">BLUSAS</a></li>
     </ul>
     </div>
   </div>
