@@ -7,7 +7,7 @@ import { cartProducts } from "../../store";
     let linkMsg:string;
 
     function enviarWhats(){
-        linkMsg = "https://wa.me//5519988935849?text=Olá%20Tenho%20interesse%20em%20comprar%20esses%20produtos";
+        linkMsg = "https://wa.me//5519988949024?text=Olá%20Tenho%20interesse%20em%20comprar%20esses%20produtos";
         $cartProducts.forEach(element => {
             linkMsg = linkMsg+`%0A${element.name} ${element.quantity}X`;
         });

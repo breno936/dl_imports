@@ -19,7 +19,7 @@
   onMount(async () => {
           token = localStorage.getItem("token");
 
-      const resToken = await fetch("api/tokenAuth", {
+      const resToken = await fetch("/api/tokenAuth", {
             method: "POST",
             headers: { "Content-Type": "application/json",
             'Authorization' : `Bearer ${token}`
