@@ -174,7 +174,7 @@ if(resToken.status == 401){
     <div class="text-center ml-auto mr-auto pt-8 w-3/5">
 
         <h3 class="font-bold text-3xl mb-10">Editar Produto</h3>
-        <div>
+        <div class="flex gap-4 imgsEdit">
           {#each vendidos.pictures as pic (pic.id)}
           <img id="{pic.namePath}" src="{pic.namePath}" data-filename="{pic.namePath}" class="w-24 h-auto" on:click={() => {selectImage(pic.id, pic.namePath)}}/>
           {/each}
@@ -230,3 +230,9 @@ if(resToken.status == 401){
       </div>
  {/if}
 </div>
+
+<style>
+  .imgsEdit{
+    transform: scale(1.1);
+  }
+</style>

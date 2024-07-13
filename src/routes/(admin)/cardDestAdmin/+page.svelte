@@ -69,6 +69,8 @@
       filePic = null;
       cardDest.subTitle = "";
       cardDest.title = "";
+      document.getElementById("closeModal")?.click();
+
       // Adicione a lógica para atualizar a lista de produtos ou feedback ao usuário
     } else {
       console.error("Failed to create card");
@@ -118,13 +120,13 @@
 </script>
 
 <div class="overflow-y-scroll h-screen">
-  <div class="flex relative">
+  <!-- <div class="flex relative">
 
     <button
       class="btn btn-outline btn-accent ml-auto mr-8 mt-8"
       on:click={openCreateModal}>Adicionar</button
     >
-  </div>
+  </div> -->
 
   <FormCardDest message="Novo" metodoModal={metodoModal} handleFileChange={handleFileChange} card={cardDest}/>
  

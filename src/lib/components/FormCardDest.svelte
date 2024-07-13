@@ -87,7 +87,7 @@
         </form>
         <form method="dialog">
           <!-- if there is a button in form, it will close the modal -->
-          <button class="btn btn-danger bg-red-500 w-full max-w-xs mt-8"
+          <button id="closeModal" class="btn btn-danger bg-red-500 w-full max-w-xs mt-8"
             >Cancelar</button
           >
         </form>

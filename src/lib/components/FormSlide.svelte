@@ -93,7 +93,7 @@
           class="input input-bordered w-full max-w-xs mt-4"
         />
 
-          <button class="btn btn-success w-full max-w-xs mt-8" type="submit"
+          <button id="closeModal" class="btn btn-success w-full max-w-xs mt-8" type="submit"
             >Cadastrar</button
           >
         </form>
