@@ -29,8 +29,8 @@
             </button>
           </form>
         </div>
-        <h3 class="font-bold text-3xl mb-10">{message} Produto</h3>
-        <form class="w-fit" on:submit={metodoModal}>
+        <h3 class="font-bold text-3xl mb-10">{message} Categoria</h3>
+        <form class="w-fit ml-auto mr-auto" on:submit={metodoModal}>
           <input
             type="text"
             bind:value={category.name}

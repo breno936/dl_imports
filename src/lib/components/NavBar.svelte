@@ -5,6 +5,31 @@
   // element should be replaced with the actual target element on which you have applied scroll, use window in case of no target element.
 
   onMount(() => {
+
+    let closeTimeout;
+
+    document.querySelectorAll("li").forEach((li) => {
+      li.addEventListener("mouseenter", () => {
+        const submenu = li.querySelector(".subMenu");
+        if (submenu) {
+          clearTimeout(closeTimeout);
+          submenu.style.height = "fit-content";
+          submenu.style.opacity = "1";
+        }
+        console.log(submenu);
+      });
+
+      li.addEventListener("mouseleave", () => {
+        const submenu = li.querySelector(".subMenu");
+        if (submenu) {
+          closeTimeout = setTimeout(() => {
+            submenu.style.height = "0";
+            submenu.style.opacity = "0";
+          }, 300); // 1 second delay
+        }
+      });
+    });
+
     window.addEventListener("resize", function(){
       const screenWidth = window.innerWidth;
 
@@ -75,6 +100,9 @@
       nav.style.height = "0";
     }
   }
+
+    // const subMenu = document.querySelector(".subMenu");
+    
 </script>
 
 <div class="w-full absolute z-40" id="navTopo">
@@ -116,7 +144,16 @@
 <nav>
     <ul class="flex justify-center">
         <li class="mr-6"><a href="/" class="transition-all cursor-pointer">HOME</a></li>
-        <li class="mr-6"><a href="/products" class="transition-all cursor-pointer">PRODUTOS</a></li>
+        <li class="mr-6"><a class="transition-all cursor-pointer">PRODUTOS</a>
+        <ul class="absolute subMenu top-[100%] px-12 flex flex-col gap-2 -ml-12 py-0 h-0 overflow-hidden">
+          <li><a href="/products/6" data-sveltekit-reload class="transition-all cursor-pointer">CAMISAS</a></li>
+          <li><a href="/products/5" data-sveltekit-reload class="transition-all cursor-pointer">POLOS</a></li>
+          <li><a href="/products/3" data-sveltekit-reload class="transition-all cursor-pointer">CHINELOS</a></li>
+          <li><a href="/products/2" data-sveltekit-reload class="transition-all cursor-pointer">TÊNIS</a></li>
+          <li><a href="/products/4" data-sveltekit-reload class="transition-all cursor-pointer">BONÉS</a></li>
+          <li><a href="/products/1" data-sveltekit-reload class="transition-all cursor-pointer">BLUSAS</a></li>
+        </ul>
+        </li>
         <li class="mr-6"><a class="transition-all cursor-pointer">AVALIAÇÕES</a></li>
         <li class="mr-6"><a href="/about" class="transition-all cursor-pointer">SOBRE NÓS</a></li>
         <li> <a href="/contact" class="transition-all cursor-pointer">CONTATO</a></li>
@@ -132,7 +169,7 @@
           </svg>
           </div>
 
-            <svg xmlns="http://www.w3.org/2000/svg" class="ml-5 md:ml-0 transition-all cursor-pointer w-6 h-6" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#ffffff" d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
+          <label for="my-drawer-4" class="drawer-button relative mr-10 cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#ffffff" d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg></label>
         </div>
     </div>
 </div>
@@ -151,7 +188,16 @@
 <nav>
     <ul class="flex justify-center">
         <li class="mr-6"><a href="/" class="transition-all cursor-pointer">HOME</a></li>
-        <li class="mr-6"><a href="/products" class="transition-all cursor-pointer">PRODUTOS</a></li>
+        <li class="mr-6"><a class="transition-all cursor-pointer">PRODUTOS</a>
+          <ul class="absolute subMenu top-[100%] px-12 flex flex-col gap-2 -ml-12 py-0 h-0 overflow-hidden">
+          
+            <li><a href="/products/6" data-sveltekit-reload class="transition-all cursor-pointer">CAMISAS</a></li>
+            <li><a href="/products/5" data-sveltekit-reload class="transition-all cursor-pointer">POLOS</a></li>
+            <li><a href="/products/3" data-sveltekit-reload class="transition-all cursor-pointer">CHINELOS</a></li>
+            <li><a href="/products/2" data-sveltekit-reload class="transition-all cursor-pointer">TÊNIS</a></li>
+            <li><a href="/products/4" data-sveltekit-reload class="transition-all cursor-pointer">BONÉS</a></li>
+            <li><a href="/products/1" data-sveltekit-reload class="transition-all cursor-pointer">BLUSAS</a></li>
+          </ul></li>
         <li class="mr-6"><a class="transition-all cursor-pointer">AVALIAÇÕES</a></li>
         <li class="mr-6"><a href="/about" class="transition-all cursor-pointer">SOBRE NÓS</a></li>
         <li><a href="/contact" class="transition-all cursor-pointer">CONTATO</a></li>
@@ -165,7 +211,7 @@
           </svg>
           </div>
 
-            <svg xmlns="http://www.w3.org/2000/svg" class="ml-5 md:ml-0 transition-all cursor-pointer  w-6 h-6" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#ffffff" d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
+          <label for="my-drawer-4" class="drawer-button relative mr-10 cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#ffffff" d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg></label>
         </div>
     </div>
 </div>
@@ -174,7 +220,15 @@
   <nav class="h-full mt-auto relative">
     <ul class="flex justify-center text-white h-full items-center flex-col">
       <li class=""><a href="/" on:click={collapseNav}>HOME</a></li>
-      <li class="mt-4"><a href="/products" on:click={collapseNav}>PRODUTOS</a></li>
+      <li class="mt-4"><a>PRODUTOS</a>
+        <ul class="subMenu bg-black absolute -mt-6 px-12 flex flex-col gap-2 ml-24 py-0 h-0 overflow-hidden">
+          <li><a href="/products/6" data-sveltekit-reload on:click={collapseNav} class="transition-all cursor-pointer">CAMISAS</a></li>
+          <li><a href="/products/5" data-sveltekit-reload on:click={collapseNav} class="transition-all cursor-pointer">POLOS</a></li>
+          <li><a href="/products/3" data-sveltekit-reload on:click={collapseNav} class="transition-all cursor-pointer">CHINELOS</a></li>
+          <li><a href="/products/2" data-sveltekit-reload on:click={collapseNav} class="transition-all cursor-pointer">TÊNIS</a></li>
+          <li><a href="/products/4" data-sveltekit-reload on:click={collapseNav} class="transition-all cursor-pointer">BONÉS</a></li>
+          <li><a href="/products/1" data-sveltekit-reload on:click={collapseNav} class="transition-all cursor-pointer">BLUSAS</a></li>
+        </ul></li>
       <li class="mt-4"><a href="" on:click={collapseNav}>AVALIAÇÕES</a></li>
       <li class="mt-4"><a href="/about" on:click={collapseNav}>SOBRE NÓS</a></li>
       <li class="mt-4"><a href="/contact" on:click={collapseNav}>CONTATO</a></li>
@@ -182,8 +236,31 @@
   </nav>
 </div>
 <style>
+  @keyframes openSubMenu{
+    0%{
+      height: fit-content;
+    }
+    95%{
+      height: fit-content;
+    }
+    to{
+      height: 0;
+    }
+  }
     ul li{
         font-family: "Roboto-Regular";
+    }
+    /* ul li:hover ul{
+      animation-name: openSubMenu;
+    animation-duration: 4s;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-delay: 1s; 
+    } */
+    .subMenu{
+      background-color: rgb(53, 53, 53, 50%);
+      transition: all 0.1s linear;
     }
     .transparentNav{
         background-color: rgb(53, 53, 53, 50%);

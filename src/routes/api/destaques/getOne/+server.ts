@@ -17,11 +17,13 @@ export const GET: RequestHandler = async ({url}) => {
     return new Response('Invalid ID', { status: 400 });
   }
 
-  const destaques = await prisma.destaques.findUnique({ where: { id } });
-  if (!destaques) {
-    return new Response('Destaque not found', { status: 404 });
+  const destaque = await prisma.destaques.findUnique({ where: { id }, include:{
+    pictures:true
+  } });
+  if (!destaque) {
+    return new Response('Item not found', { status: 404 });
   }
 
-  return new Response(JSON.stringify({ destaques }), { status: 200 });
+  return new Response(JSON.stringify({ destaque }), { status: 200 });
 
 };

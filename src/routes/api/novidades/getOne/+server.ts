@@ -17,11 +17,15 @@ export const GET: RequestHandler = async ({url}) => {
     return new Response('Invalid ID', { status: 400 });
   }
 
-  const novidades = await prisma.novidades.findUnique({ where: { id } });
-  if (!novidades) {
+  const novidade = await prisma.novidades.findUnique({ where: { id },
+    include:{
+      pictures:true
+    }
+  });
+  if (!novidade) {
     return new Response('Novidade not found', { status: 404 });
   }
 
-  return new Response(JSON.stringify({ novidades }), { status: 200 });
+  return new Response(JSON.stringify({ novidade }), { status: 200 });
 
 };

@@ -56,13 +56,12 @@
       <li class="cursor-pointer"><a>AVALIAÇÕES</a></li>
       <li class="cursor-pointer"><a href="/about">SOBRE NÓS</a></li>
       <li class="cursor-pointer"><a href="/contact">CONTATO</a></li>
-      <li class="cursor-pointer"><a>TÊNIS</a></li>
-      <li class="cursor-pointer"><a>BONÉS</a></li>
-      <li class="cursor-pointer"><a>POLOS</a></li>
-      <li class="cursor-pointer"><a>BERMUDAS</a></li>
-      <li class="cursor-pointer"><a>BLUSAS DE FRIO</a></li>
-      <li class="cursor-pointer"><a>CONJUNTOS</a></li>
-      <li class="cursor-pointer"><a>CALÇADOS</a></li>
+      <li><a href="/products/6" data-sveltekit-reload class="cursor-pointer">CAMISAS</a></li>
+      <li><a href="/products/5" data-sveltekit-reload class="cursor-pointer">POLOS</a></li>
+      <li><a href="/products/3" data-sveltekit-reload class="cursor-pointer">CHINELOS</a></li>
+      <li><a href="/products/2" data-sveltekit-reload class="cursor-pointer">TÊNIS</a></li>
+      <li><a href="/products/4" data-sveltekit-reload class="cursor-pointer">BONÉS</a></li>
+      <li><a href="/products/1" data-sveltekit-reload class="cursor-pointer">BLUSAS</a></li>
     </ul>
     </div>
   </div>

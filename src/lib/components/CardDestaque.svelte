@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import type { CardDest } from "@prisma/client";
+  import { onMount, tick } from "svelte";
+
+  let cardList: CardDest[] = [];
+  let token: string;
 
   var lastScrollTop = 0;
   let card1:any;
@@ -7,10 +11,19 @@
   let path86:any;
   let path154:any;
   
-  onMount(() => {
+  onMount(async () => {
     // var st = window.pageYOffset || document.documentElement.scrollTop;
     // var countScroll = 0;
+    const res = await fetch("api/cardDest/getAll", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+    cardList = data.cards;
+    console.log(cardList[0]);
 
+    await tick();
     const options1 = {
       root: null, // viewport
       rootMargin: '0px',
@@ -68,6 +81,7 @@
     if (path154) observer2.observe(path154);
     if (card1) observer3.observe(card1);
 
+    
   });
 </script>
 
@@ -116,19 +130,31 @@
          style="stroke:#ffffff;stroke-width:5.80849;stroke-opacity:1"
           />
     </svg>
-    
-        <div id="card1" bind:this={card1} class="w-full md:w-3/5 xl:w-2/5 h-[500px] mb-10 bg-green-50 relative cursor-pointer card">
-        <div class="description w-full h-2/6 bottom-0 transition-all absolute text-center">
-            <h1 class="text-[#FFBF00] text-[60px] transition-all">DJ ARANA</h1>
-            <h2 class="text-white transition-all">Conjunto Andy</h2>
-        </div>
+ 
+    {#if cardList.length > 0}
+    <div id="card1" bind:this={card1} style="background-image: url('{cardList[0].picture}');"  class="w-full md:w-3/5 xl:w-2/5 h-[500px] mb-10 bg-green-50 relative cursor-pointer card">
+      <div class="description w-full h-2/6 bottom-0 transition-all absolute text-center">
+          <h1 class="text-[#FFBF00] text-[60px] transition-all">{cardList[0].title}</h1>
+          <h2 class="text-white transition-all">{cardList[0].subTitle}</h2>
+      </div>
+  </div>       
+  {/if}
+
+  {#if cardList.length > 0}
+  <div id="card2" bind:this={card2} style="background-image: url('{cardList[1].picture}');"  class="w-full md:w-3/5 xl:w-2/5 ml-auto mt-24 h-[500px] mb-10 bg-green-50 cursor-pointer relative card">
+    <div class="description w-full h-2/6 bottom-0 transition-all absolute text-center">
+        <h1 class="text-[#FFBF00] text-[60px] transition-all">{cardList[1].title}</h1>
+        <h2 class="text-white transition-all">{cardList[1].subTitle}</h2>
     </div>
-    <div id="card2" bind:this={card2} class="w-full md:w-3/5 xl:w-2/5 ml-auto mt-24 h-[500px] mb-10 bg-green-50 cursor-pointer relative card">
+</div>       
+{/if}
+   
+    <!-- <div id="card2" bind:this={card2} class="w-full md:w-3/5 xl:w-2/5 ml-auto mt-24 h-[500px] mb-10 bg-green-50 cursor-pointer relative card">
         <div class="description transition-all w-full h-2/6 bottom-0 absolute text-center">
             <h1 class="text-[#FFBF00] text-[60px] transition-all">4 POR 2</h1>
             <h2 class="text-white">Cool Cats</h2>
         </div>
-    </div>
+    </div> -->
 </div>
 <style>
     .divCorte{

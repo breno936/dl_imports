@@ -1,4 +1,5 @@
 // import { verifyToken } from '$lib/server/jwt';
+import { verifyToken } from '$lib/server/jwt';
 import prisma from '$lib/server/prisma';
 import { Decimal } from '@prisma/client/runtime/library';
 import type { RequestHandler } from '@sveltejs/kit';
@@ -12,8 +13,8 @@ cloudinary.config({
 
 
 export const POST: RequestHandler = async ({ request }) => {
-    // const token = request.headers.get('Authorization');
-    // if(token && verifyToken(token)){
+    const token = request.headers.get('Authorization');
+    if(token && verifyToken(token)){
     const data = await request.formData();
   
     const title = data.get('title') as string;
@@ -21,6 +22,7 @@ export const POST: RequestHandler = async ({ request }) => {
     const textButton = data.get('textButton') as string;
     const linkButton = data.get('linkButton') as string;
     const picture = data.get('picture') as File;
+    let optimizedUrl:string = "";
  
   
     if (!picture) {
@@ -42,18 +44,25 @@ export const POST: RequestHandler = async ({ request }) => {
     
         // Send the buffer to Cloudinary
         uploadStream.end(buffer);
+      
+  
       });
 
-    
+      optimizedUrl = cloudinary.url(result.public_id, {
+        transformation: [
+          { quality: 'auto' },
+          { fetch_format: 'auto' }
+        ]
+      });
     const newSlide = await prisma.slideHome.create({
-      data: { title, subTitle, linkButton, picture:result.secure_url, textButton }
+      data: { title, subTitle, linkButton, picture:optimizedUrl, textButton }
   
     });
    
     return new Response(JSON.stringify({ newSlide: newSlide }), { status: 201 });
   
-//   }else{
-//     return new Response(JSON.stringify({ message: 'Não autorizado' }), { status: 401 });
+  }else{
+    return new Response(JSON.stringify({ message: 'Não autorizado' }), { status: 401 });
   
-//   }
+  }
   };

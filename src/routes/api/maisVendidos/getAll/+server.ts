@@ -12,7 +12,12 @@ cloudinary.config({
 
 export const GET: RequestHandler = async ({request}) => {
   
-  const maisVendidos = await prisma.maisVendidos.findMany();
+  const maisVendidos = await prisma.maisVendidos.findMany({
+    include:{
+      pictures:true,
+      category:true
+    }
+  });
   return new Response(JSON.stringify({ maisVendidos }), { status: 200 });
 
 };

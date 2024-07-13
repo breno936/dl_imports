@@ -16,7 +16,12 @@ const config = {
 		alias:{
 			$components:'src/lib/components',
 		$fonts:'static/fonts'
-		}
+		},
+		csrf: {
+			checkOrigin: false,
+		  }
+	  
+
 	}
 };
 

@@ -1,11 +1,53 @@
 <script lang="ts">
   import type { Product } from "@prisma/client";
   import type { Decimal } from "@prisma/client/runtime/library";
+  import { onMount } from "svelte";
 
     export let message:string;
     export let metodoModal;
     export let product:Product;
     export let handleFileChange;
+    let token: string;
+    let categoryList:any[] = [];
+    let subCategoryList:any[] = [];
+
+    
+  onMount(async () => {
+    //       token = localStorage.getItem("token");
+
+    //   const resToken = await fetch("api/tokenAuth", {
+    //         method: "POST",
+    //         headers: { "Content-Type": "application/json",
+    //         'Authorization' : `Bearer ${token}`
+
+    //          },
+
+    //       });
+
+    //   if(resToken.status == 401){
+    //     goto("/login");
+    //   }
+
+    // Carregar produtos quando a página é carregada
+    const res = await fetch("api/category/getAll", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+    categoryList = data.categories;
+
+        // Carregar produtos quando a página é carregada
+    const resS = await fetch("api/subCategory/getAll", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const dataS = await resS.json();
+    subCategoryList = dataS.subCategories;
+    console.log(subCategoryList);
+
+});
 
 </script>
 
@@ -13,7 +55,7 @@
     <div class="modal-box text-center pt-8">
       <div class="modal-action absolute block top-0 right-5">
         <form method="dialog">
-          <button class="btn btn-circle btn-outline min-h-0 h-6 w-6">
+          <button id="closeModal" class="btn btn-circle btn-outline min-h-0 h-6 w-6">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-3 w-3"
@@ -44,6 +86,25 @@
           placeholder="Nome"
           class="input input-bordered w-full max-w-xs mt-4"
         />
+     
+
+        <select bind:value={product.categoryId} class="select select-bordered w-full max-w-xs mt-4">
+          <option disabled selected value={0}>Categorias</option>
+          {#each categoryList as c (c.id)}
+          <option value="{c.id}">
+            {c.name}
+          </option>
+        {/each}
+        </select>
+        <select bind:value={product.subCategoryId} class="select select-bordered w-full max-w-xs mt-4">
+          <option disabled selected value={0}>Sub Categorias</option>
+          {#each subCategoryList as c (c.id)}
+          <option value="{c.id}">
+            {c.name}
+          </option>
+        {/each}
+        </select>
+  
         <input
           type="number"
           bind:value={product.price}

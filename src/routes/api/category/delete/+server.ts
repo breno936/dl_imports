@@ -1,4 +1,5 @@
 // import { verifyToken } from '$lib/server/jwt';
+import { verifyToken } from '$lib/server/jwt';
 import prisma from '$lib/server/prisma';
 import { Decimal } from '@prisma/client/runtime/library';
 import type { RequestHandler } from '@sveltejs/kit';
@@ -15,8 +16,8 @@ cloudinary.config({
 
 export const DELETE: RequestHandler = async ({ request }) => {
   try {
-    // const token = request.headers.get('Authorization');
-    // if(token && verifyToken(token)){
+    const token = request.headers.get('Authorization');
+    if(token && verifyToken(token)){
     const { id } = await request.json();
     
     await prisma.category.delete({
@@ -24,10 +25,10 @@ export const DELETE: RequestHandler = async ({ request }) => {
     });
 
     return new Response(JSON.stringify({ message: 'Category deleted' }), { status: 200 });
-  // }else{
-  //   return new Response(JSON.stringify({ message: 'Não autorizado' }), { status: 401 });
+  }else{
+    return new Response(JSON.stringify({ message: 'Não autorizado' }), { status: 401 });
 
-  // }
+  }
   } catch (error) {
     console.error('Error deleting category:', error);
     return new Response(JSON.stringify({ error: 'Failed to delete category' }), { status: 500 });

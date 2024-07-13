@@ -29,18 +29,18 @@
     }
 
     
-    const res = await fetch('api/dashboard',{
-      headers:{
-        'Authorization' : `Bearer ${token}`
+    // const res = await fetch('api/dashboard',{
+    //   headers:{
+    //     'Authorization' : `Bearer ${token}`
 
-      }
-    });
-    const data = await res.json();
-    products = data.products;
-    services = data.services;
-    scheduling = data.scheduling;
-    hoursClosed = data.hoursClosed;
-    hoursOpen = data.hoursOpen;
+    //   }
+    // });
+    // const data = await res.json();
+    // products = data.products;
+    // services = data.services;
+    // scheduling = data.scheduling;
+    // hoursClosed = data.hoursClosed;
+    // hoursOpen = data.hoursOpen;
   });
  
 

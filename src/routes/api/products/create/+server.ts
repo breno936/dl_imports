@@ -1,4 +1,5 @@
 // import { verifyToken } from '$lib/server/jwt';
+import { verifyToken } from '$lib/server/jwt';
 import prisma from '$lib/server/prisma';
 import { Decimal } from '@prisma/client/runtime/library';
 import type { RequestHandler } from '@sveltejs/kit';
@@ -14,8 +15,8 @@ cloudinary.config({
 
 
 export const POST: RequestHandler = async ({ request }) => {
-    // const token = request.headers.get('Authorization');
-    // if(token && verifyToken(token)){
+    const token = request.headers.get('Authorization');
+    if(token && verifyToken(token)){
     const data = await request.formData();
 
     const name = data.get('name') as string;
@@ -23,8 +24,9 @@ export const POST: RequestHandler = async ({ request }) => {
     const description = data.get('description') as string;
     const tag = data.get('tag') as string;
     const size = data.get('size') as string;
-    const categoryId = Number(data.get('category') as string) > 0 ? Number(data.get('category') as string) : null;
-    
+    const categoryId = Number(data.get('categoryId') as string) > 0 ? Number(data.get('categoryId') as string) : null;
+    const subCategoryId = Number(data.get('subCategoryId') as string) > 0 ? Number(data.get('subCategoryId') as string) : null;
+
     const picture: File[] = [];
 
     const picturesResult: any[] = [];
@@ -60,12 +62,18 @@ for (const element of picture) {
     uploadStream.end(buffer);
   });
   console.log(result);
-  picturesResult.push(result.secure_url);
-  console.log(picturesResult);
+  const optimizedUrl = cloudinary.url(result.public_id, {
+    transformation: [
+      { quality: 'auto' },
+      { fetch_format: 'auto' }
+    ]
+  });
+
+picturesResult.push(optimizedUrl);  console.log(picturesResult);
 }
 
 console.log(picturesResult);
-
+console.log(subCategoryId);
   // Criar o novo produto
   const newProduct = await prisma.product.create({
     data: {
@@ -74,6 +82,8 @@ console.log(picturesResult);
       tag,
       price,
       size,
+      categoryId,
+      subCategoryId,
       pictures: {
         create: picturesResult.map((url) => ({
           namePath: url,
@@ -93,8 +103,8 @@ console.log(picturesResult);
 
 return new Response(JSON.stringify({ product: newProduct }), { status: 201 });
 
-//   }else{
-//     return new Response(JSON.stringify({ message: 'Não autorizado' }), { status: 401 });
+  }else{
+    return new Response(JSON.stringify({ message: 'Não autorizado' }), { status: 401 });
   
-//   }
+  }
   };

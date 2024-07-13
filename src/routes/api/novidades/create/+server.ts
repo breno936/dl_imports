@@ -1,4 +1,5 @@
 // import { verifyToken } from '$lib/server/jwt';
+import { verifyToken } from '$lib/server/jwt';
 import prisma from '$lib/server/prisma';
 import { Decimal } from '@prisma/client/runtime/library';
 import type { RequestHandler } from '@sveltejs/kit';
@@ -14,8 +15,8 @@ cloudinary.config({
 
 
 export const POST: RequestHandler = async ({ request }) => {
-    // const token = request.headers.get('Authorization');
-    // if(token && verifyToken(token)){
+    const token = request.headers.get('Authorization');
+    if(token && verifyToken(token)){
     const data = await request.formData();
   
     const name = data.get('name') as string;
@@ -23,7 +24,7 @@ export const POST: RequestHandler = async ({ request }) => {
     const description = data.get('description') as string;
     const tag = data.get('tag') as string;
     const size = data.get('size') as string;
-    const categoryId = Number(data.get('category') as string);
+    const categoryId = Number(data.get('categoryId') as string) > 0 ? Number(data.get('categoryId') as string) : null;
     const picture: File[] = [];
 
     const picturesResult: any[] = [];
@@ -38,6 +39,7 @@ export const POST: RequestHandler = async ({ request }) => {
     if (!picture) {
       return new Response('No file uploaded', { status: 400 });
     }
+    
     
     for (const element of picture) {
       const buffer = Buffer.from(await element.arrayBuffer());
@@ -57,26 +59,40 @@ export const POST: RequestHandler = async ({ request }) => {
         uploadStream.end(buffer);
       });
       console.log(result);
-      picturesResult.push(result.secure_url);
+      const optimizedUrl = cloudinary.url(result.public_id, {
+        transformation: [
+          { quality: 'auto' },
+          { fetch_format: 'auto' }
+        ]
+      });
+
+    picturesResult.push(optimizedUrl);
       console.log(picturesResult);
     }
     
-    
-    const newNovidades = await prisma.novidades.create({
-      data: { name, description, tag, price, categoryId, size }
-  
-    });
-
-    picturesResult.forEach(async element => {
-      let pictures = await prisma.pictures.create({
-        data:{novidadesId:newNovidades.id, namePath:element}
-      })
+    const newNovidade = await prisma.novidades.create({
+      data: {
+        name,
+        description,
+        tag,
+        price,
+        size,
+        categoryId,
+        pictures: {
+          create: picturesResult.map((url) => ({
+            namePath: url,
+          })),
+        },
+      },
+      include: {
+        pictures: true, // Incluir as imagens associadas no retorno
+      },
     });
    
-    return new Response(JSON.stringify({ novidade: newNovidades }), { status: 201 });
+    return new Response(JSON.stringify({ novidade: newNovidade }), { status: 201 });
   
-//   }else{
-//     return new Response(JSON.stringify({ message: 'Não autorizado' }), { status: 401 });
+  }else{
+    return new Response(JSON.stringify({ message: 'Não autorizado' }), { status: 401 });
   
-//   }
+  }
   };

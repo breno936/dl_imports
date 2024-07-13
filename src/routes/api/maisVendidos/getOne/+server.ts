@@ -17,9 +17,11 @@ export const GET: RequestHandler = async ({url}) => {
     return new Response('Invalid ID', { status: 400 });
   }
 
-  const maisVendidos = await prisma.maisVendidos.findUnique({ where: { id } });
+  const maisVendidos = await prisma.maisVendidos.findUnique({ where: { id }, include:{
+    pictures:true
+  } });
   if (!maisVendidos) {
-    return new Response('Register not found', { status: 404 });
+    return new Response('Item not found', { status: 404 });
   }
 
   return new Response(JSON.stringify({ maisVendidos }), { status: 200 });

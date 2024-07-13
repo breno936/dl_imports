@@ -19,20 +19,20 @@
 
 
   onMount(async () => {
-    //       token = localStorage.getItem("token");
+          token = localStorage.getItem("token");
 
-    //   const resToken = await fetch("api/tokenAuth", {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json",
-    //         'Authorization' : `Bearer ${token}`
+      const resToken = await fetch("api/tokenAuth", {
+            method: "POST",
+            headers: { "Content-Type": "application/json",
+            'Authorization' : `Bearer ${token}`
 
-    //          },
+             },
 
-    //       });
+          });
 
-    //   if(resToken.status == 401){
-    //     goto("/login");
-    //   }
+      if(resToken.status == 401){
+        goto("/login");
+      }
 
     // Carregar produtos quando a página é carregada
     const res = await fetch("api/category/getAll", {
@@ -63,6 +63,7 @@
       const newCategory = await res.json();
 
       categoryList = [...categoryList, newCategory.category];
+      category.name = "";
       // Adicione a lógica para atualizar a lista de produtos ou feedback ao usuário
     } else {
       console.error("Failed to create category");
@@ -93,9 +94,10 @@
   function openEditModal(idParam:number, nameParam:string){
       category.id = idParam;
       category.name = nameParam;
+      message = "Editar";
+      metodoModal = editCategory;  
       document.getElementById("my_modal_1")?.showModal();
-        message = "Editar";
-        metodoModal = editCategory;  
+       
     }
 
     async function editCategory(event: any) {
@@ -134,15 +136,15 @@
 </script>
 
 <div class="overflow-y-scroll h-screen">
-  <div class="flex relative">
+  <!-- <div class="flex relative">
 
     <button
       class="btn btn-outline btn-accent ml-auto mr-8 mt-8"
       on:click={openCreateModal}>Adicionar</button
     >
-  </div>
+  </div> -->
 
-  <FormModalCategory message="Novo" metodoModal={metodoModal} category={category}/>
+  <FormModalCategory message="{message}" metodoModal={metodoModal} category={category}/>
  
   <div class="overflow-x-auto">
     <table class="table">

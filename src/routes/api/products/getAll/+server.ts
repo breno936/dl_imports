@@ -14,7 +14,8 @@ export const GET: RequestHandler = async ({request}) => {
   
   const products = await prisma.product.findMany({
     include:{
-      pictures:true
+      pictures:true,
+      category:true
     }
   });
   return new Response(JSON.stringify({ products }), { status: 200 });

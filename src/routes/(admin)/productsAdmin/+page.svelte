@@ -11,7 +11,7 @@
   let message: String = "";
   let token: string;
 
-  let product:Product = {categoryId:0, description:"", id:0, name:"", price:new Decimal(0.0), size:"", tag:""};
+  let product:Product = {categoryId:0, description:"", id:0, name:"", price:new Decimal(0.0), size:"", tag:"", subCategoryId:0};
   let picture:Pictures = {id:0, namePath:"", destaquesId:null, maisVendidosId:null, novidadesId:null, productId:null}
   let picturesList:any[] = [];
   
@@ -26,20 +26,20 @@
 //   let picture: any[] = [];
 
   onMount(async () => {
-    //       token = localStorage.getItem("token");
+          token = localStorage.getItem("token");
 
-    //   const resToken = await fetch("api/tokenAuth", {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json",
-    //         'Authorization' : `Bearer ${token}`
+      const resToken = await fetch("api/tokenAuth", {
+            method: "POST",
+            headers: { "Content-Type": "application/json",
+            'Authorization' : `Bearer ${token}`
 
-    //          },
+             },
 
-    //       });
+          });
 
-    //   if(resToken.status == 401){
-    //     goto("/login");
-    //   }
+      if(resToken.status == 401){
+        goto("/login");
+      }
 
     // Carregar produtos quando a página é carregada
     const res = await fetch("api/products/getAll", {
@@ -56,13 +56,16 @@
   async function createProduct(event: any) {
     event.preventDefault();
 
+    console.log(product.subCategoryId);
     const formData = new FormData();
     formData.append("name", product.name);
     formData.append("description", product.description);
     formData.append("tag", product.tag);
     formData.append("size", product.size);
     formData.append("categoryId", product.categoryId.toString());
+    formData.append("subCategoryId", product.subCategoryId.toString());
     formData.append("price", product.price.toString());
+    console.log(product.categoryId);
  
     picturesList.forEach((file) => {
         formData.append("picture", file);
@@ -81,6 +84,15 @@
       const newProduct = await res.json();
       console.log(newProduct);
       productList = [...productList, newProduct.product];
+      product.name = "";
+      product.description = "";
+      product.tag = "";
+      product.size = "";
+      product.categoryId = 0;
+      product.subCategoryId = 0;
+      product.price = new Decimal(0.0);
+      document.getElementById("closeModal")?.click();
+
       // Adicione a lógica para atualizar a lista de produtos ou feedback ao usuário
     } else {
       console.error("Failed to create product");
@@ -152,7 +164,7 @@
       <thead>
         <tr>
           <th> </th>
-          <th>Foto</th>
+          <th>Fotos</th>
           <th>Nome</th>
           <th>Preço</th>
           <th>Descrição</th>
@@ -248,7 +260,7 @@
       </tbody><tfoot>
         <tr>
           <th></th>
-          <th>Foto</th>
+          <th>Fotos</th>
           <th>Nome</th>
           <th>Preço</th>
           <th>Descrição</th>

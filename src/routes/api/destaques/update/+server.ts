@@ -1,4 +1,5 @@
 // import { verifyToken } from '$lib/server/jwt';
+import { verifyToken } from '$lib/server/jwt';
 import prisma from '$lib/server/prisma';
 import { Decimal } from '@prisma/client/runtime/library';
 import type { RequestHandler } from '@sveltejs/kit';
@@ -17,8 +18,8 @@ cloudinary.config({
 
 
 export const PUT: RequestHandler = async ({ request }) => {
-    // const token = request.headers.get('Authorization');
-    // if(token && verifyToken(token)){
+    const token = request.headers.get('Authorization');
+    if(token && verifyToken(token)){
     const data = await request.formData();
 
     const id = Number(data.get('id') as string);
@@ -27,7 +28,7 @@ export const PUT: RequestHandler = async ({ request }) => {
     const description = data.get('description') as string;
     const tag = data.get('tag') as string;
     const size = data.get('size') as string;
-    const categoryId = Number(data.get('category') as string);
+    const categoryId = Number(data.get('categoryId') as string) > 0 ? Number(data.get('categoryId') as string) : null;
     const newPicture: File[] = [];
     const removePicture: string[] = [];
 
@@ -52,9 +53,7 @@ export const PUT: RequestHandler = async ({ request }) => {
     });   
 
     if (newPicture) {
-    
-    newPicture.forEach(async element => {
-      if(typeof element == 'object'){
+      for (const element of newPicture) {
         const buffer = Buffer.from(await element.arrayBuffer());
         const result: any = await new Promise((resolve, reject) => {
           const uploadStream = cloudinary.uploader.upload_stream(
@@ -67,43 +66,61 @@ export const PUT: RequestHandler = async ({ request }) => {
               }
             }
           );
-      
+        
           // Send the buffer to Cloudinary
           uploadStream.end(buffer);
-
         });
-        picturesResult.push(result.secure_url);
-
-      }
-    });
+        const optimizedUrl = cloudinary.url(result.public_id, {
+          transformation: [
+            { quality: 'auto' },
+            { fetch_format: 'auto' }
+          ]
+        });
+  
+      picturesResult.push(optimizedUrl);      }
  
 
     }
- 
+
     if(removePicture){
       removePicture.forEach(element => {
+
         deleteImage(element);
       });
     }
     
     const updateDestaque = await prisma.destaques.update({
       where:{id},
-      data: { name, description, tag, price, categoryId, size }
-  
+      data: { name, description, tag, price, categoryId, size },
+      include:{
+        pictures:true,
+        category:true
+
+      }
     });
 
-    picturesResult.forEach(async element => {
+    console.log(picturesResult);
+    updateDestaque.pictures = [];
+
+    for (const element of picturesResult) {
       let pictures = await prisma.pictures.create({
-        data:{destaquesId:updateDestaque.id, namePath:element.secure_url}
+      
+        data:{destaquesId:updateDestaque.id, namePath:element},
       })
-    });
-   
+    };
+
+    updateDestaque.pictures = await prisma.pictures.findMany({
+      where:{
+        novidadesId:updateDestaque.id
+      }
+    })
+    
     return new Response(JSON.stringify({ destaque: updateDestaque }), { status: 201 });
   
-//   }else{
-//     return new Response(JSON.stringify({ message: 'Não autorizado' }), { status: 401 });
+  }else{
+    return new Response(JSON.stringify({ message: 'Não autorizado' }), { status: 401 });
   
-//   }
+  }
   };
 
 
@@ -125,18 +142,20 @@ export const PUT: RequestHandler = async ({ request }) => {
           });
         }
   
-
      // Encontrar o ID da imagem com base no namePath
      const picture = await prisma.pictures.findFirst({
-      where: { namePath: imagePath },
+      where: { id: Number(imagePath) },
     });
 
     if (picture) {
       // Excluir do banco de dados usando o ID
-      await prisma.pictures.delete({
+      const resultDelete = await prisma.pictures.delete({
         where: { id: picture.id },
       });
+
+
     }
+
       // } else {
       //   console.log('Unauthorized access to delete image');
       // }

@@ -11,6 +11,12 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
+model User{
+  id Int @id @default(autoincrement())
+  username String
+  password String
+}
+
 model Category{
   id Int @id @default(autoincrement())
   name String
@@ -18,6 +24,15 @@ model Category{
   destaques Destaques[]
   novidades Novidades[]
   maisVendidos MaisVendidos[]
+}
+
+model SubCategory{
+  id Int @id @default(autoincrement())
+  name String
+  products Product[]
+  destaques Destaques[]
+  novidades Novidades[]
+  maisVendidos MaisVendidos[]  
 }
 
 model Product{
@@ -30,6 +45,8 @@ model Product{
   pictures Pictures[]
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
+  subCategory SubCategory? @relation(fields: [subCategoryId], references: [id])
+  subCategoryId Int?
 }
 
 model Pictures{
@@ -55,7 +72,8 @@ model Destaques{
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
   size String
-
+  subCategory SubCategory? @relation(fields: [subCategoryId], references: [id])
+  subCategoryId Int?
 }
 
 model CardDest{
@@ -75,6 +93,8 @@ model Novidades{
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
   size String
+  subCategory SubCategory? @relation(fields: [subCategoryId], references: [id])
+  subCategoryId Int?
 }
 
 model MaisVendidos{
@@ -87,6 +107,8 @@ model MaisVendidos{
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
   size String
+  subCategory SubCategory? @relation(fields: [subCategoryId], references: [id])
+  subCategoryId Int?
 }
 
 model DestBanner{
