@@ -7,6 +7,7 @@
   async function logar(){
 
     const formData = new FormData();
+    username = username.charAt(0).toUpperCase() + username.slice(1);
     formData.append('username', username);
     formData.append('password', password);
 
