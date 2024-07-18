@@ -17,6 +17,16 @@ model User{
   password String
 }
 
+model Sizes{
+  id Int @id @default(autoincrement())
+  size String
+  products Product[] @relation("SizesProducts")
+  destaques Destaques[] @relation("SizesDestaques")
+  novidades Novidades[] @relation("SizesNovidades")
+  maisVendidos MaisVendidos[] @relation("SizesVendidos")
+  
+  }
+
 model Category{
   id Int @id @default(autoincrement())
   name String
@@ -41,7 +51,7 @@ model Product{
   price Decimal
   description String
   tag String
-  size String
+  size Sizes[] @relation("SizesProducts")
   pictures Pictures[]
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
@@ -71,7 +81,7 @@ model Destaques{
   pictures Pictures[]
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
-  size String
+  size Sizes[] @relation("SizesDestaques")
   subCategory SubCategory? @relation(fields: [subCategoryId], references: [id])
   subCategoryId Int?
 }
@@ -92,7 +102,7 @@ model Novidades{
   pictures Pictures[]
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
-  size String
+  size Sizes[] @relation("SizesNovidades")
   subCategory SubCategory? @relation(fields: [subCategoryId], references: [id])
   subCategoryId Int?
 }
@@ -106,7 +116,7 @@ model MaisVendidos{
   pictures Pictures[]
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
-  size String
+  size Sizes[] @relation("SizesVendidos")
   subCategory SubCategory? @relation(fields: [subCategoryId], references: [id])
   subCategoryId Int?
 }

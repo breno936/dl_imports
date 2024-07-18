@@ -2,7 +2,7 @@
   import { goto } from "$app/navigation";
   import FormModal from "$components/FormModal.svelte";
   import ModalConfirm from "$components/ModalConfirm.svelte";
-  import type { Pictures, MaisVendidos, Destaques } from "@prisma/client";
+  import type { Pictures, MaisVendidos, Destaques, Sizes } from "@prisma/client";
   import { Decimal } from 'decimal.js';
   import { onMount } from "svelte";
 
@@ -14,6 +14,8 @@
   let destaques:Destaques = {categoryId:0, description:"", id:0, name:"", price:new Decimal(0.0), size:"", tag:""};
   let picture:Pictures = {id:0, namePath:"", destaquesId:null, maisVendidosId:null, novidadesId:null, productId:null}
   let picturesList:any[] = [];
+  let sizeListCreate:{id:number, size:string}[] = [];
+  let sizesList:Sizes[] = [];
   //Product Variable Declaration
 //   let id: number | null = null;
 //   let categoryId: number | null = null;
@@ -59,13 +61,16 @@
     formData.append("name", destaques.name);
     formData.append("description", destaques.description);
     formData.append("tag", destaques.tag);
-    formData.append("size", destaques.size);
     formData.append("categoryId", destaques.categoryId.toString());
     formData.append("price", destaques.price.toString());
     console.log(destaques.categoryId);
  
     picturesList.forEach((file) => {
         formData.append("picture", file);
+    });
+
+    sizeListCreate.forEach((s) =>{
+      formData.append("size", s.id);
     });
 
     console.log(picture);
@@ -84,10 +89,11 @@
       destaques.name = "";
       destaques.description = "";
       destaques.tag = "";
-      destaques.size = "";
       destaques.categoryId = 0;
       destaques.subCategoryId = 0;
       destaques.price = new Decimal(0.0);
+      sizeListCreate = [];
+
       document.getElementById("closeModal")?.click();
 
       // Adicione a lógica para atualizar a lista de produtos ou feedback ao usuário
@@ -153,7 +159,7 @@
     >
   </div>
 
-  <FormModal message="Novo" metodoModal={metodoModal} handleFileChange={handleFileChange} product={destaques}/>
+  <FormModal message="Novo" metodoModal={metodoModal} sizesCreate={sizeListCreate} sizeList={sizesList} handleFileChange={handleFileChange} product={destaques}/>
  
   <div class="overflow-x-auto">
     <table class="table">
@@ -208,7 +214,10 @@
                {p.description}
               </th>
               <th>
-                {p.size}
+                {#each p.size as s(s.id)}
+                { s.size } - 
+
+                {/each}
                </th>
                <th>
                 {p.tag}

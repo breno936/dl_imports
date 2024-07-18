@@ -25,9 +25,12 @@ export const POST: RequestHandler = async ({ request }) => {
     const tag = data.get('tag') as string;
     const size = data.get('size') as string;
     const categoryId = Number(data.get('categoryId') as string) > 0 ? Number(data.get('categoryId') as string) : null;
+    const subCategoryId = Number(data.get('subCategoryId') as string) > 0 ? Number(data.get('subCategoryId') as string) : null;
     const picture: File[] = [];
 
     const picturesResult: any[] = [];
+    const sizes: any[] = [];
+
 
     // Iterar sobre os itens do FormData
     data.forEach((value, key) => {
@@ -35,6 +38,13 @@ export const POST: RequestHandler = async ({ request }) => {
         picture.push(value);
       }
     });    
+
+    data.forEach((value, key) => {
+      console.log(data);
+      if (key === 'size') {
+        sizes.push(Number(value));
+      }
+    });
   
     if (!picture) {
       return new Response('No file uploaded', { status: 400 });
@@ -61,8 +71,8 @@ export const POST: RequestHandler = async ({ request }) => {
       console.log(result);
       const optimizedUrl = cloudinary.url(result.public_id, {
         transformation: [
-          { quality: 'auto' },
-          { fetch_format: 'auto' }
+          { quality: 'auto:good' },
+          { fetch_format: 'webp' }
         ]
       });
 
@@ -75,8 +85,11 @@ export const POST: RequestHandler = async ({ request }) => {
         description,
         tag,
         price,
-        size,
+        size:{
+          connect:sizes.map((s) => ({id:s}))
+         },        
         categoryId,
+        subCategoryId,
         pictures: {
           create: picturesResult.map((url) => ({
             namePath: url,
@@ -84,7 +97,10 @@ export const POST: RequestHandler = async ({ request }) => {
         },
       },
       include: {
-        pictures: true, // Incluir as imagens associadas no retorno
+        pictures: true,
+        size:true,
+        category:true,
+        subCategory:true // Incluir as imagens associadas no retorno
       },
     });
    

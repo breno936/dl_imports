@@ -20,7 +20,8 @@ export const GET: RequestHandler = async ({url}) => {
   const product = await prisma.product.findUnique({ where: { id }, include:{
     pictures:true,
     category:true,
-    subCategory:true
+    subCategory:true,
+    size:true
   } });
   if (!product) {
     return new Response('Product not found', { status: 404 });

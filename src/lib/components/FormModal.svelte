@@ -7,10 +7,12 @@
     export let metodoModal;
     export let product:Product;
     export let handleFileChange;
+    export let sizeList:any[];
+    export let sizesCreate:any[];
     let token: string;
     let categoryList:any[] = [];
     let subCategoryList:any[] = [];
-
+    let sizeId:number = 0;
     
   onMount(async () => {
     //       token = localStorage.getItem("token");
@@ -37,6 +39,14 @@
     const data = await res.json();
     categoryList = data.categories;
 
+    const resSize = await fetch("api/size/getAll", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const dataSize = await resSize.json();
+    sizeList = dataSize.sizes;
+
         // Carregar produtos quando a página é carregada
     const resS = await fetch("api/subCategory/getAll", {
       headers: {
@@ -49,6 +59,32 @@
 
 });
 
+function handleSizeChange(event:any){
+    console.log(sizeList);
+
+    sizeList.forEach(element => {
+        if(element.id == event){
+          if(!sizesCreate.includes(element)){
+            sizesCreate.push(element);
+        }
+        }
+    });
+
+    sizesCreate = sizesCreate;
+    
+    // sizesList = sizesList.filter(item => item.id !== event);
+    
+  }
+
+function handleDeleteChange(event:any){
+     const indexDelete = sizesCreate.findIndex(item => item.id == event);
+     console.log(indexDelete);
+      if(indexDelete != -1){
+        sizesCreate.splice(indexDelete, 1);
+      }
+
+      sizesCreate = sizesCreate;
+  }
 </script>
 
 <dialog id="my_modal_1" class="modal">
@@ -104,6 +140,34 @@
           </option>
         {/each}
         </select>
+
+        <select bind:value={sizeId} on:change={() => {handleSizeChange(sizeId)}} class="select select-bordered w-full max-w-xs mt-4">
+          <option disabled selected value={0}>Sizes</option>
+          {#each sizeList as c (c.id)}
+          <option value="{c.id}">
+            {c.size}
+          </option>
+        {/each}
+        
+        </select>
+        <div class="pt-6">
+          {#each sizesCreate as s(s.id)}
+          <div class="badge badge-info gap-2" on:click={() =>{handleDeleteChange(s.id)}}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              class="inline-block h-4 w-4 stroke-current cursor-pointer">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            {s.size}
+          </div>
+          {/each}
+        </div>
   
         <input
           type="number"
@@ -118,19 +182,14 @@
           placeholder="Description"
           class="input input-bordered w-full max-w-xs mt-4"
         />
-        <input
-        type="text"
-        bind:value={product.size}
-        placeholder="size"
-        class="input input-bordered w-full max-w-xs mt-4"
-      />
+
       <input
       type="text"
       bind:value={product.tag}
       placeholder="tag"
       class="input input-bordered w-full max-w-xs mt-4"
     />
-        <button class="btn btn-success w-full max-w-xs mt-8" type="submit"
+        <button id="insertButton" class="btn btn-success w-full max-w-xs mt-8" type="submit"
           >Cadastrar</button
         >
       </form>

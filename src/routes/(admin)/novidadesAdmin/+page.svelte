@@ -2,7 +2,7 @@
   import { goto } from "$app/navigation";
   import FormModal from "$components/FormModal.svelte";
   import ModalConfirm from "$components/ModalConfirm.svelte";
-  import type { Novidades, Pictures } from "@prisma/client";
+  import type { Novidades, Pictures, Sizes } from "@prisma/client";
   import { Decimal } from 'decimal.js';
   import { onMount } from "svelte";
 
@@ -11,9 +11,11 @@
   let message: String = "";
   let token: string;
 
-  let novidade:Novidades = {categoryId:0, description:"", id:0, name:"", price:new Decimal(0.0), size:"", tag:""};
+  let novidade:Novidades = {categoryId:0, description:"", id:0, name:"", price:new Decimal(0.0), tag:"", subCategoryId:0};
   let picture:Pictures = {id:0, namePath:"", destaquesId:null, maisVendidosId:null, novidadesId:null, productId:null}
   let picturesList:any[] = [];
+  let sizeListCreate:{id:number, size:string}[] = [];
+  let sizesList:Sizes[] = [];
   
   //Product Variable Declaration
 //   let id: number | null = null;
@@ -60,13 +62,16 @@
     formData.append("name", novidade.name);
     formData.append("description", novidade.description);
     formData.append("tag", novidade.tag);
-    formData.append("size", novidade.size);
     formData.append("categoryId", novidade.categoryId.toString());
     formData.append("price", novidade.price.toString());
     console.log(novidade.categoryId);
  
     picturesList.forEach((file) => {
         formData.append("picture", file);
+    });
+
+    sizeListCreate.forEach((s) =>{
+      formData.append("size", s.id);
     });
 
     console.log(picture);
@@ -86,10 +91,11 @@
       novidade.name = "";
       novidade.description = "";
       novidade.tag = "";
-      novidade.size = "";
       novidade.categoryId = 0;
       novidade.subCategoryId = 0;
       novidade.price = new Decimal(0.0);
+      sizeListCreate = [];
+
       document.getElementById("closeModal")?.click();
 
       // Adicione a lógica para atualizar a lista de produtos ou feedback ao usuário
@@ -114,6 +120,7 @@
       novidadesList = novidadesList.filter((p) => p.id !== novidade.id);
     }
   }
+
 
   function handleFileChange(event:any) {
     const input = event.target as HTMLInputElement;
@@ -155,7 +162,7 @@
     >
   </div>
 
-  <FormModal message="Novo" metodoModal={metodoModal} handleFileChange={handleFileChange} product={novidade}/>
+  <FormModal message="Novo" metodoModal={metodoModal} sizesCreate={sizeListCreate} sizeList={sizesList} handleFileChange={handleFileChange} product={novidade}/>
  
   <div class="overflow-x-auto">
     <table class="table">
@@ -210,7 +217,10 @@
                {p.description}
               </th>
               <th>
-                {p.size}
+                {#each p.size as s(s.id)}
+                { s.size } - 
+
+                {/each}
                </th>
                <th>
                 {p.tag}

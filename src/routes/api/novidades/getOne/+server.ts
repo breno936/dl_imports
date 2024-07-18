@@ -19,7 +19,10 @@ export const GET: RequestHandler = async ({url}) => {
 
   const novidade = await prisma.novidades.findUnique({ where: { id },
     include:{
-      pictures:true
+      pictures:true,
+      size:true,
+      category:true,
+      subCategory:true
     }
   });
   if (!novidade) {

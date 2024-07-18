@@ -2,7 +2,7 @@
   import { goto } from "$app/navigation";
   import FormModal from "$components/FormModal.svelte";
   import ModalConfirm from "$components/ModalConfirm.svelte";
-  import type { Pictures, Product } from "@prisma/client";
+  import type { Pictures, Product, Sizes } from "@prisma/client";
   import { Decimal } from 'decimal.js';
   import { onMount } from "svelte";
 
@@ -11,9 +11,11 @@
   let message: String = "";
   let token: string;
 
-  let product:Product = {categoryId:0, description:"", id:0, name:"", price:new Decimal(0.0), size:"", tag:"", subCategoryId:0};
+  let product:Product = {categoryId:0, description:"", id:0, name:"", price:new Decimal(0.0), tag:"", subCategoryId:0};
   let picture:Pictures = {id:0, namePath:"", destaquesId:null, maisVendidosId:null, novidadesId:null, productId:null}
   let picturesList:any[] = [];
+  let sizeListCreate:{id:number, size:string}[] = [];
+  let sizesList:Sizes[] = [];
   
   //Product Variable Declaration
 //   let id: number | null = null;
@@ -61,7 +63,6 @@
     formData.append("name", product.name);
     formData.append("description", product.description);
     formData.append("tag", product.tag);
-    formData.append("size", product.size);
     formData.append("categoryId", product.categoryId.toString());
     formData.append("subCategoryId", product.subCategoryId.toString());
     formData.append("price", product.price.toString());
@@ -69,6 +70,11 @@
  
     picturesList.forEach((file) => {
         formData.append("picture", file);
+    });
+
+    console.log(sizeListCreate);
+    sizeListCreate.forEach((s) =>{
+      formData.append("size", s.id);
     });
 
     console.log(picture);
@@ -87,10 +93,10 @@
       product.name = "";
       product.description = "";
       product.tag = "";
-      product.size = "";
       product.categoryId = 0;
       product.subCategoryId = 0;
       product.price = new Decimal(0.0);
+      sizeListCreate = [];
       document.getElementById("closeModal")?.click();
 
       // Adicione a lógica para atualizar a lista de produtos ou feedback ao usuário
@@ -128,6 +134,8 @@
     }
   }
 
+
+
   function openModalConfirm(idParam:number){
     product.id = idParam;
     document.getElementById("my_modal_confirm")?.showModal();
@@ -156,7 +164,7 @@
     >
   </div>
 
-  <FormModal message="Novo" metodoModal={metodoModal} handleFileChange={handleFileChange} product={product}/>
+  <FormModal message="Novo" metodoModal={metodoModal} sizesCreate={sizeListCreate} sizeList={sizesList} handleFileChange={handleFileChange} product={product}/>
  
   <div class="overflow-x-auto">
     <table class="table">
@@ -211,7 +219,10 @@
                {p.description}
               </th>
               <th>
-                {p.size}
+                {#each p.size as s(s.id)}
+                { s.size } - 
+
+                {/each}
                </th>
                <th>
                 {p.tag}

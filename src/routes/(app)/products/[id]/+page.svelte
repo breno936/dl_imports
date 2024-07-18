@@ -1,6 +1,6 @@
 <script lang="ts">
   import InternalCard from "$components/InternalCard.svelte";
-  import type { Product, SubCategory } from "@prisma/client";
+  import type { Product, Sizes, SubCategory } from "@prisma/client";
   import { onMount } from "svelte";
   import { page } from '$app/stores';
   import { get } from 'svelte/store';
@@ -20,6 +20,8 @@
   let orderCondition:string;
   let productsWithQuantity:Array<any> = [];
   let id;
+  let sizeList:Sizes[] = [];
+
 
   onMount(async () => {
     id = get(page).params.id;
@@ -52,9 +54,17 @@
     });
     const dataC = await resC.json();
     categoryList = dataC.subCategories;
+
+    const resSize = await fetch("/api/size/getAll", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const dataSize = await resSize.json();
+    sizeList = dataSize.sizes;
   });
 
-  async function getSubCategory(idSub:number, idSize:string, orderPrice:string){
+  async function getSubCategory(idSub:number, idSize:any, orderPrice:string){
     const id = get(page).params.id;
 
     if(idSub != 0){
@@ -68,7 +78,8 @@
     }
     }
 
-    if(idSize != ""){
+    console.log(idSize);
+    if(idSize != null){
       if(sizes.includes(idSize)){
       const index = sizes.indexOf(idSize);
       if (index !== -1) {
@@ -78,6 +89,7 @@
       sizes.push(idSize);
     }
     }
+    console.log(sizes);
 
     if(orderPrice != ""){
       orderCondition = orderPrice; 
@@ -197,7 +209,7 @@ function addProduct(prod:any){
               <div class="pt-6" id="filter-section-mobile-1">
                 <div class="space-y-6">
                   {#each categoryList as c(c.id)}
-                  <div class="flex items-center" on:click={() =>{getSubCategory(c.id, "", "")}}>
+                  <div class="flex items-center" on:click={() =>{getSubCategory(c.id, null, "")}}>
                     <input id="filter-mobile-category-0" name="category[]" value="new-arrivals" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                     <label for="filter-mobile-category-0" class="ml-3 min-w-0 flex-1 text-gray-500">{c.name}</label>
                   </div>
@@ -220,26 +232,12 @@ function addProduct(prod:any){
               <!-- Filter section, show/hide based on section state. -->
               <div class="pt-6" id="filter-section-mobile-2">
                 <div class="space-y-6">
-                  <div class="flex items-center" on:click={() => getSubCategory(0, "PP", "")}>
-                    <input id="filter-mobile-size-0" name="size[]" value="2l" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                    <label for="filter-mobile-size-0" class="ml-3 min-w-0 flex-1 text-gray-500">PP</label>
+                  {#each sizeList as s (s.id)}
+                  <div class="flex items-center" on:click={() => getSubCategory(0, s, "")}>
+                    <input id="filter-size-0" name="size[]" value="2l" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                    <label for="filter-size-0" class="ml-3 text-sm text-gray-600">{s.size}</label>
                   </div>
-                  <div class="flex items-center" on:click={() => getSubCategory(0, "P", "")}>
-                    <input id="filter-mobile-size-1" name="size[]" value="6l" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                    <label for="filter-mobile-size-1" class="ml-3 min-w-0 flex-1 text-gray-500">P</label>
-                  </div>
-                  <div class="flex items-center" on:click={() => getSubCategory(0, "M", "")}>
-                    <input id="filter-mobile-size-2" name="size[]" value="12l" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                    <label for="filter-mobile-size-2" class="ml-3 min-w-0 flex-1 text-gray-500">M</label>
-                  </div>
-                  <div class="flex items-center" on:click={() => getSubCategory(0, "G", "")}>
-                    <input id="filter-mobile-size-3" name="size[]" value="18l" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                    <label for="filter-mobile-size-3" class="ml-3 min-w-0 flex-1 text-gray-500">G</label>
-                  </div>
-                  <div class="flex items-center" on:click={() => getSubCategory(0, "GG", "")}>
-                    <input id="filter-mobile-size-4" name="size[]" value="20l" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                    <label for="filter-mobile-size-4" class="ml-3 min-w-0 flex-1 text-gray-500">GG</label>
-                  </div>
+                  {/each}
             
                 </div>
               </div>
@@ -299,8 +297,8 @@ function addProduct(prod:any){
 
                   Selected: "font-medium text-gray-900", Not Selected: "text-gray-500"
                 -->
-                <a href="#" on:click={() => getSubCategory(0, "", "asc")} class="block px-4 py-2 text-sm text-gray-500" role="menuitem" tabindex="-1" id="menu-item-3">Menor preço</a>
-                <a href="#" on:click={() => getSubCategory(0, "", "desc")} class="block px-4 py-2 text-sm text-gray-500" role="menuitem" tabindex="-1" id="menu-item-4">Maior preço</a>
+                <a href="#" on:click={() => getSubCategory(0, null, "asc")} class="block px-4 py-2 text-sm text-gray-500" role="menuitem" tabindex="-1" id="menu-item-3">Menor preço</a>
+                <a href="#" on:click={() => getSubCategory(0, null, "desc")} class="block px-4 py-2 text-sm text-gray-500" role="menuitem" tabindex="-1" id="menu-item-4">Maior preço</a>
               </div>
             </div>
           </div>
@@ -346,7 +344,7 @@ function addProduct(prod:any){
               <div class="pt-6" class:hidden={hiddenFilter2} id="filter-section-1">
                 <div class="space-y-4">
                   {#each categoryList as c(c.id)}
-                  <div class="flex items-center" on:click={() =>{getSubCategory(c.id, "", "")}}>
+                  <div class="flex items-center" on:click={() =>{getSubCategory(c.id, null, "")}}>
                     <input id="filter-category-0" name="category[]" value="new-arrivals" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                     <label for="filter-category-0" class="ml-3 text-sm text-gray-600">{c.name}</label>
                   </div>
@@ -376,26 +374,13 @@ function addProduct(prod:any){
               <!-- Filter section, show/hide based on section state. -->
               <div class:hidden={hiddenFilter3} class="pt-6" id="filter-section-2">
                 <div class="space-y-4">
-                  <div class="flex items-center" on:click={() => getSubCategory(0, "PP", "")}>
+                  {#each sizeList as s (s.id)}
+                  <div class="flex items-center" on:click={() => getSubCategory(0, s, "")}>
                     <input id="filter-size-0" name="size[]" value="2l" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                    <label for="filter-size-0" class="ml-3 text-sm text-gray-600">PP</label>
+                    <label for="filter-size-0" class="ml-3 text-sm text-gray-600">{s.size}</label>
                   </div>
-                  <div class="flex items-center" on:click={() => getSubCategory(0, "P", "")}>
-                    <input id="filter-size-1" name="size[]" value="6l" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                    <label for="filter-size-1" class="ml-3 text-sm text-gray-600">P</label>
-                  </div>
-                  <div class="flex items-center" on:click={() => getSubCategory(0, "M", "")}>
-                    <input id="filter-size-2" name="size[]" value="12l" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                    <label for="filter-size-2" class="ml-3 text-sm text-gray-600">M</label>
-                  </div>
-                  <div class="flex items-center" on:click={() => getSubCategory(0, "G", "")}>
-                    <input id="filter-size-3" name="size[]" value="18l" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                    <label for="filter-size-3" class="ml-3 text-sm text-gray-600">G</label>
-                  </div>
-                  <div class="flex items-center" on:click={() => getSubCategory(0, "GG", "")}>
-                    <input id="filter-size-4" name="size[]" value="20l" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                    <label for="filter-size-4" class="ml-3 text-sm text-gray-600">GG</label>
-                  </div>
+                  {/each}
+                  
                 </div>
               </div>
             </div>

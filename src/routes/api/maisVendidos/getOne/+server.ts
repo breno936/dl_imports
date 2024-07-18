@@ -18,7 +18,10 @@ export const GET: RequestHandler = async ({url}) => {
   }
 
   const maisVendidos = await prisma.maisVendidos.findUnique({ where: { id }, include:{
-    pictures:true
+    pictures:true,
+    size:true,
+    category:true,
+    subCategory:true
   } });
   if (!maisVendidos) {
     return new Response('Item not found', { status: 404 });

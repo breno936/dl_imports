@@ -18,7 +18,10 @@ export const GET: RequestHandler = async ({url}) => {
   }
 
   const destaque = await prisma.destaques.findUnique({ where: { id }, include:{
-    pictures:true
+    pictures:true,
+    size:true,
+    category:true,
+    subCategory:true
   } });
   if (!destaque) {
     return new Response('Item not found', { status: 404 });

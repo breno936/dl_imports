@@ -12,14 +12,7 @@ cloudinary.config({
 
 export const GET: RequestHandler = async ({request}) => {
   
-  const destaques = await prisma.destaques.findMany({
-    include:{
-      pictures:true,
-      category:true,
-      size:true,
-      subCategory:true
-    }
-  });
-  return new Response(JSON.stringify({ destaques }), { status: 200 });
+  const sizes = await prisma.sizes.findMany();
+  return new Response(JSON.stringify({ sizes }), { status: 200 });
 
 };

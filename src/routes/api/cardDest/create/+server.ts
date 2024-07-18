@@ -48,8 +48,8 @@ export const POST: RequestHandler = async ({ request }) => {
 
       optimizedUrl = cloudinary.url(result.public_id, {
         transformation: [
-          { quality: 'auto' },
-          { fetch_format: 'auto' }
+          { quality: 'auto:good' },
+          { fetch_format: 'webp' }
         ]
       });
     const newCard = await prisma.cardDest.create({

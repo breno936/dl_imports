@@ -27,20 +27,37 @@ export const PUT: RequestHandler = async ({ request }) => {
     const price = new Decimal(data.get('price') as string);
     const description = data.get('description') as string;
     const tag = data.get('tag') as string;
-    const size = data.get('size') as string;
     const categoryId = Number(data.get('categoryId') as string) > 0 ? Number(data.get('categoryId') as string) : null;
     const subCategoryId = Number(data.get('subCategoryId') as string) > 0 ? Number(data.get('categoryId') as string) : null;
     const newPicture: File[] = [];
     const removePicture: string[] = [];
+    const sizes: any[] = [];
+    const sizesRemove: any[] = [];
+
 
     console.log(subCategoryId);
 
     const picturesResult: any[] = [];
 
-    const existingProduct = await prisma.product.findFirst({
-      where:{id},
+    // Desconectar tamanhos antigos (opcional)
+    const existingProduct = await prisma.product.findUnique({
+      where: { id },
+      include: { size: true },
     });
 
+    data.forEach((value, key) => {
+      console.log(data);
+      if (key === 'size') {
+        sizes.push(Number(value));
+      }
+    });
+
+    data.forEach((value, key) => {
+      console.log(data);
+      if (key === 'sizeRemove') {
+        sizesRemove.push(Number(value));
+      }
+    });
 
     // Iterar sobre os itens do FormData
     data.forEach((value, key) => {
@@ -75,8 +92,8 @@ export const PUT: RequestHandler = async ({ request }) => {
         });
         const optimizedUrl = cloudinary.url(result.public_id, {
           transformation: [
-            { quality: 'auto' },
-            { fetch_format: 'auto' }
+            { quality: 'auto:good' },
+            { fetch_format: 'webp' }
           ]
         });
   
@@ -92,13 +109,28 @@ export const PUT: RequestHandler = async ({ request }) => {
       });
     }
     
+
+
+  const sizesToDisconnect = existingProduct?.size.map(size => ({ id: size.id })) || [];
+
     const updateProduct = await prisma.product.update({
       where:{id},
-      data: { name, description, tag, price, categoryId, size, subCategoryId },
+      data: { name, 
+        description, 
+        tag,
+         price,
+         categoryId,
+         subCategoryId, 
+         size: {
+          disconnect:sizesToDisconnect,
+          set: sizes.map(sizeId => ({ id: sizeId }))
+        }
+       },
       include:{
         pictures:true,
         category:true,
-        subCategory:true
+        subCategory:true,
+        size:true
       }
     });
 

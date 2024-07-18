@@ -5,9 +5,10 @@ export const POST: RequestHandler = async ({ request }) => {
   let ids: number[] = [];
   let idCat: number | undefined;
   let orderPrice: string | undefined;
-  let sizes: string[] = [];
+  let sizes: any[] = [];
 
   try {
+
     const body = await request.json();
     ids = body.arrId || [];  // Extrai o array de IDs de subcategoria, ou um array vazio se não fornecido
     idCat = body.idCategory ? Number(body.idCategory) : undefined;  // Extrai e converte o ID da categoria para número, se fornecido
@@ -34,13 +35,15 @@ export const POST: RequestHandler = async ({ request }) => {
   }
 
   try {
+    const sizeNames = sizes.map(sizeObj => sizeObj.size);
+
     console.log(sizes);
     console.log(ids);
     // Monta a cláusula `where` dinamicamente com base nas condições fornecidas
     const whereConditions: any = {};
     const oderByCondition:any = {};
 
-    if (sizes.length > 0) {
+    if (ids.length > 0) {
       whereConditions.OR = ids.map(id => ({
         subCategoryId: id  // Adiciona uma condição `OR` para o campo `size`
       }));
@@ -51,10 +54,12 @@ export const POST: RequestHandler = async ({ request }) => {
     }
     
 
-    if (sizes.length > 0) {
-      whereConditions.OR = sizes.map(size => ({
-        size: size  // Adiciona uma condição `OR` para o campo `size`
-      }));
+    if (sizeNames.length > 0) {
+      whereConditions.size = {
+        some: {
+          size: { in: sizeNames }  // Adiciona uma condição `some` para a relação `sizes`
+        }
+      };
     }
 
     if(orderPrice !== undefined && orderPrice != ""){
@@ -65,7 +70,8 @@ export const POST: RequestHandler = async ({ request }) => {
     const products = await prisma.product.findMany({
       include: {
         pictures: true,  // Inclui a relação com a tabela de `pictures`
-        category: true  // Inclui a relação com a tabela de `category`
+        category: true,
+        size:true  // Inclui a relação com a tabela de `category`
       },
       where: whereConditions,  // Passa as condições para a cláusula `where`
       orderBy:oderByCondition

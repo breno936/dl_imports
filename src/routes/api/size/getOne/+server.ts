@@ -10,16 +10,18 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-export const GET: RequestHandler = async ({request}) => {
-  
-  const destaques = await prisma.destaques.findMany({
-    include:{
-      pictures:true,
-      category:true,
-      size:true,
-      subCategory:true
-    }
-  });
-  return new Response(JSON.stringify({ destaques }), { status: 200 });
+export const GET: RequestHandler = async ({url}) => {
+  const id = Number(url.searchParams.get('id'));
+
+  if (isNaN(id)) {
+    return new Response('Invalid ID', { status: 400 });
+  }
+
+  const size = await prisma.sizes.findUnique({ where: { id } });
+  if (!size) {
+    return new Response('Size not found', { status: 404 });
+  }
+
+  return new Response(JSON.stringify({ size }), { status: 200 });
 
 };

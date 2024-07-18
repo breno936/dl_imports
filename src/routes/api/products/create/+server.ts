@@ -23,22 +23,28 @@ export const POST: RequestHandler = async ({ request }) => {
     const price = new Decimal(data.get('price') as string);
     const description = data.get('description') as string;
     const tag = data.get('tag') as string;
-    const size = data.get('size') as string;
     const categoryId = Number(data.get('categoryId') as string) > 0 ? Number(data.get('categoryId') as string) : null;
     const subCategoryId = Number(data.get('subCategoryId') as string) > 0 ? Number(data.get('subCategoryId') as string) : null;
 
+    console.log(data);
     const picture: File[] = [];
 
     const picturesResult: any[] = [];
+    const sizes: any[] = [];
 
     // Iterar sobre os itens do FormData
     data.forEach((value, key) => {
-      console.log(data);
       if (key === 'picture' && value instanceof File) {
         picture.push(value);
       }
     });    
-    console.log(picture);
+
+    data.forEach((value, key) => {
+      console.log(data);
+      if (key === 'size') {
+        sizes.push(Number(value));
+      }
+    });
 
     if (!picture) {
       return new Response('No file uploaded', { status: 400 });
@@ -64,8 +70,8 @@ for (const element of picture) {
   console.log(result);
   const optimizedUrl = cloudinary.url(result.public_id, {
     transformation: [
-      { quality: 'auto' },
-      { fetch_format: 'auto' }
+      { quality: 'auto:good' },
+      { fetch_format: 'webp' }
     ]
   });
 
@@ -81,7 +87,9 @@ console.log(subCategoryId);
       description,
       tag,
       price,
-      size,
+      size:{
+       connect:sizes.map((s) => ({id:s}))
+      },
       categoryId,
       subCategoryId,
       pictures: {
@@ -91,7 +99,8 @@ console.log(subCategoryId);
       },
     },
     include: {
-      pictures: true, // Incluir as imagens associadas no retorno
+      pictures: true, 
+      size:true// Incluir as imagens associadas no retorno
     },
   });
 

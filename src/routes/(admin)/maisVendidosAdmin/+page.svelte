@@ -2,7 +2,7 @@
   import { goto } from "$app/navigation";
   import FormModal from "$components/FormModal.svelte";
   import ModalConfirm from "$components/ModalConfirm.svelte";
-  import type { Pictures, MaisVendidos } from "@prisma/client";
+  import type { Pictures, MaisVendidos, Sizes } from "@prisma/client";
   import { Decimal } from 'decimal.js';
   import { onMount } from "svelte";
 
@@ -14,6 +14,8 @@
   let maisVendidos:MaisVendidos = {categoryId:0, description:"", id:0, name:"", price:new Decimal(0.0), size:"", tag:""};
   let picture:Pictures = {id:0, namePath:"", destaquesId:null, maisVendidosId:null, novidadesId:null, productId:null}
   let picturesList:any[] = [];
+  let sizeListCreate:{id:number, size:string}[] = [];
+  let sizesList:Sizes[] = [];
   //Product Variable Declaration
 //   let id: number | null = null;
 //   let categoryId: number | null = null;
@@ -59,14 +61,19 @@
     formData.append("name", maisVendidos.name);
     formData.append("description", maisVendidos.description);
     formData.append("tag", maisVendidos.tag);
-    formData.append("size", maisVendidos.size);
     formData.append("categoryId", maisVendidos.categoryId.toString());
+    formData.append("subCategoryId", maisVendidos.subCategoryId.toString());
     formData.append("price", maisVendidos.price.toString());
     console.log(maisVendidos.categoryId);
  
     picturesList.forEach((file) => {
         formData.append("picture", file);
     });
+
+    sizeListCreate.forEach((s) =>{
+      formData.append("size", s.id);
+    });
+
 
     console.log(picture);
     const res = await fetch("/api/maisVendidos/create", {
@@ -84,10 +91,11 @@
       maisVendidos.name = "";
       maisVendidos.description = "";
       maisVendidos.tag = "";
-      maisVendidos.size = "";
       maisVendidos.categoryId = 0;
       maisVendidos.subCategoryId = 0;
       maisVendidos.price = new Decimal(0.0);
+      sizeListCreate = [];
+
       document.getElementById("closeModal")?.click();
 
       // Adicione a lógica para atualizar a lista de produtos ou feedback ao usuário
@@ -153,7 +161,7 @@
     >
   </div>
 
-  <FormModal message="Novo" metodoModal={metodoModal} handleFileChange={handleFileChange} product={maisVendidos}/>
+  <FormModal message="Novo" metodoModal={metodoModal} sizesCreate={sizeListCreate} sizeList={sizesList} handleFileChange={handleFileChange} product={maisVendidos}/>
  
   <div class="overflow-x-auto">
     <table class="table">
@@ -208,8 +216,11 @@
                {p.description}
               </th>
               <th>
-                {p.size}
-               </th>
+                {#each p.size as s(s.id)}
+                { s.size } - 
+
+                {/each}
+              </th>
                <th>
                 {p.tag}
                </th>
