@@ -162,8 +162,8 @@
         </div>
        
 
-        <div class="w-fit md:w-1/12 justify-end text-right flex pr-10">
-          <div class="blck md:hidden cursor-pointer" on:click={collapseNav}>
+        <div class="w-fit md:w-1/12 justify-end text-right flex md:pr-10">
+          <div class="blck md:hidden cursor-pointer mr-3" on:click={collapseNav}>
             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 17 14">
               <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
           </svg>
@@ -204,8 +204,8 @@
     </ul>
 </nav>
         </div>
-        <div class="w-fit md:w-1/12 justify-end text-right flex pr-10">
-          <div class="blck md:hidden cursor-pointer" on:click={collapseNav}>
+        <div class="w-fit md:w-1/12 justify-end text-right flex md:pr-10">
+          <div class="blck md:hidden cursor-pointer mr-3" on:click={collapseNav}>
             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 17 14">
               <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
           </svg>

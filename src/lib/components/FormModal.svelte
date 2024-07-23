@@ -39,6 +39,7 @@
     const data = await res.json();
     categoryList = data.categories;
 
+    console.log(categoryList);
     const resSize = await fetch("api/size/getAll", {
       headers: {
         Authorization: `Bearer ${token}`,

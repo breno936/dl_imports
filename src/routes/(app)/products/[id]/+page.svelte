@@ -249,10 +249,10 @@ function addProduct(prod:any){
 
     <main class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <div class="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-        {#if id == 1}
+        {#if id == 2}
         <h1 class="text-4xl font-bold tracking-tight text-gray-900">Blusas</h1>
         {/if}
-        {#if id == 2}
+        {#if id == 1}
         <h1 class="text-4xl font-bold tracking-tight text-gray-900">Tênis</h1>
         {/if}
         {#if id == 3}
@@ -390,12 +390,12 @@ function addProduct(prod:any){
           <div class="lg:col-span-3">
             <div class="flex mt-10 h-fit w-full justify-evenly gap-x-1 gap-y-8 flex-wrap">
               {#each productsWithQuantity as p (p.id)}
-              <div class="w-[48%] md:w-[30%] h-[580px] relative">
+              <div class="max-[300px]:w-[85%] max-[470px]:w-[70%] w-[50%] sm:w-[40%] md:w-[30%] h-[430px] sm:h-[460px] md:h-[440px] lg:h-[480px] relative">
                 <div class="card-product h-full rounded-lg flex flex-col">
-                  <div class="w-full h-4/6 block relative">
+                  <div class="w-full h-1/2 sm:h-3/5 md:h-3/5 lg:h-5/6 xl:h-5/12 block relative">
                       <InternalCard idSwiper={"product"+p.id} imgList={p.pictures} tag={p.tag}/>
                   </div>
-                  <div class="w-full h-2/6 block relative text-center description">
+                  <div class="w-full h-5/6 sm:h-4/6 md:h-4/6 lg:h-3/6 xl:h-3/6 block relative text-center description">
                       <h3>{p.name}</h3>
                       <h1 class="mt-6">R${p.price}</h1>
                       {#if p.quantity > 0}

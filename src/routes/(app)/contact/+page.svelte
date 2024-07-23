@@ -1,3 +1,69 @@
+<script lang="ts">
+    let nome: string = '';
+    let email: string = '';
+    let telefone: string = '';
+    let mensagem: string = '';
+
+    let emailError: string = '';
+    let telefoneError: string = '';
+
+    const sendMessage = () => {
+        if (validateInputs()) {
+            const baseURL = "https://wa.me/5511989098443";
+            const message = `Nome: ${nome}\nEmail: ${email}\nTelefone: ${telefone}\nMensagem: ${mensagem}`;
+            const encodedMessage = encodeURIComponent(message);
+            const url = `${baseURL}?text=${encodedMessage}`;
+            window.open(url, '_blank');
+        }
+    };
+
+    const validateInputs = (): boolean => {
+        let valid = true;
+
+        if (!validateEmailFormat(email)) {
+            emailError = 'Email inválido';
+            valid = false;
+        } else {
+            emailError = '';
+        }
+
+        return valid;
+    };
+
+    const validateEmail = (event: Event) => {
+        const input = event.currentTarget as HTMLInputElement;
+        email = input.value;
+        emailError = validateEmailFormat(email) ? '' : 'Email inválido';
+    };
+
+    // const validateTelefone = (event: Event) => {
+    //     const input = event.currentTarget as HTMLInputElement;
+    //     telefone = input.value;
+    //     telefoneError = validateTelefoneFormat(telefone) ? '' : 'Telefone inválido';
+    // };
+
+    const validateEmailFormat = (email: string): boolean => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    };
+
+        const handlePhone = (event: any) => {
+    let input = event.target
+    input.value = phoneMask(input.value)
+    }
+
+    const phoneMask = (value:any) => {
+    if (!value) return ""
+    value = value.replace(/\D/g,'')
+    value = value.replace(/(\d{2})(\d)/,"($1) $2")
+    value = value.replace(/(\d)(\d{4})$/,"$1-$2")
+    return value
+    }
+</script>
+
+
+
+
 <div class="divTopo"></div>
 
 
@@ -69,15 +135,21 @@
 
 
             <form class="mt-8 space-y-4">
-                <input type='text' placeholder='Nome'
-                    class="w-full rounded-lg py-3 px-4 text-gray-800 text-sm outline-[#FFBF00]" />
-                <input type='email' placeholder='Email'
-                    class="w-full rounded-lg py-3 px-4 text-gray-800 text-sm outline-[#FFBF00]" />
-                <input type='text' placeholder='Telefone'
-                    class="w-full rounded-lg py-3 px-4 text-gray-800 text-sm outline-[#FFBF00]" />
-                <textarea placeholder='Mensagem' rows="6"
+                <input bind:value={nome} type='text' placeholder='Nome'
+                    class="w-full rounded-lg py-3 px-4 text-gray-800 text-sm outline-[#FFBF00]" maxlength="100"/>
+                <input bind:value={email} type='email' placeholder='Email'
+                    class="w-full rounded-lg py-3 px-4 text-gray-800 text-sm outline-[#FFBF00]" on:input={validateEmail} maxlength="100"/>
+                {#if emailError}
+                    <p class="text-red-500 text-sm">{emailError}</p>
+                {/if}
+                <input bind:value={telefone} type='text' placeholder='Telefone'
+                    class="w-full rounded-lg py-3 px-4 text-gray-800 text-sm outline-[#FFBF00]" on:input={handlePhone} maxlength="15" />
+                {#if telefoneError}
+                    <p class="text-red-500 text-sm">{telefoneError}</p>
+                {/if}
+                <textarea bind:value={mensagem} placeholder='Mensagem' rows="6" maxlength="300"
                     class="w-full rounded-lg px-4 text-gray-800 text-sm pt-3 outline-[#FFBF00]"></textarea>
-                <button type='button'
+                <button type='button' on:click={sendMessage}
                     class="text-white bg-[#FFBF00] hover:opacity-60 tracking-wide rounded-lg text-sm px-4 py-3 flex items-center justify-center w-full !mt-6">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill='#fff' class="mr-2" viewBox="0 0 548.244 548.244">
                         <path fill-rule="evenodd" d="M392.19 156.054 211.268 281.667 22.032 218.58C8.823 214.168-.076 201.775 0 187.852c.077-13.923 9.078-26.24 22.338-30.498L506.15 1.549c11.5-3.697 24.123-.663 32.666 7.88 8.542 8.543 11.577 21.165 7.879 32.666L390.89 525.906c-4.258 13.26-16.575 22.261-30.498 22.338-13.923.076-26.316-8.823-30.728-22.032l-63.393-190.153z" clip-rule="evenodd" data-original="#000000" />
@@ -92,5 +164,8 @@
 <style>
       .divTopo{
         height: 12.5rem;
+    }
+    input[type='text'][placeholder='Telefone'] {
+        mask: (00) 00000-0000;
     }
 </style>

@@ -95,10 +95,10 @@
             <div class="swiper-wrapper pt-6 pl-1">
               {#each productsWithQuantity as v (v.id)}
               <div class="swiper-slide rounded-lg flex flex-col">
-                <div class="w-full h-4/6">
+                <div class="w-full h-5/12">
                     <InternalCard idSwiper={"vendidos"+v.id} imgList={v.pictures} tag={v.tag}/>
                 </div>
-                <div class="w-full h-2/6 text-center description">
+                <div class="w-full h-3/6 text-center description">
                     <h3>{v.name}</h3>
                     <h1 class="mt-6">R${v.price}</h1>
                     {#if v.quantity > 0}
