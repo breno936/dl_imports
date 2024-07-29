@@ -25,6 +25,7 @@
 
     productsWithQuantity = destaqueList.map(pro =>({
       ...pro,
+      uniqueSize:"",
       quantity: 0
     }))
 
@@ -67,24 +68,50 @@
   
       });
 
-      function addProduct(prod:any){
-  const productExists = $cartProducts.some(product => product.id === prod.id);
-
-  if(productExists){
-
-  $cartProducts = $cartProducts.map(product => {
-  if (product.id === prod.id) {
-    return { ...product, quantity: product.quantity + prod.quantity };
-  } else {
-    return product;
+      function selectSizeModal(event) {
+    const sizeSelect = event.currentTarget.closest('.description').querySelector('.sizeSelect select');
+    sizeSelect.parentElement.classList.toggle('hidden');
   }
-});
-  }else{
-  $cartProducts = [...$cartProducts, prod];
+
+  function handleBuyButtonClick(event, product) {
+
+    if (product.uniqueSize !== "" && product.quantity >= 1) {
+      const prodWithSize = { ...product, size: product.uniqueSize, quantity: 1 };
+      addProduct(prodWithSize);
+    } else {
+      document.getElementById("errorQuantity").style.top = "10px";
+      setTimeout(() => {
+        document.getElementById("errorQuantity").style.top = "-8rem";
+
+      }, 2000);
+    }
   }
-  
-  localStorage.setItem("cartProducts", JSON.stringify($cartProducts));
-}
+
+
+      function addProduct(prod) {
+    let productExists = false;
+
+    $cartProducts = $cartProducts.map(product => {
+      if (product.id === prod.id && product.size === prod.size) {
+        productExists = true;
+        return { ...product, quantity: product.quantity + prod.quantity };
+      } else {
+        return product;
+      }
+    });
+
+    if (!productExists) {
+      $cartProducts = [...$cartProducts, prod];
+    }
+
+    localStorage.setItem("cartProducts", JSON.stringify($cartProducts));
+
+    document.getElementById("alertAdd").style.top = "10px";
+      setTimeout(() => {
+        document.getElementById("alertAdd").style.top = "-8rem";
+
+      }, 2000);
+  }
   </script>
 
 
@@ -93,23 +120,45 @@
         <div class="swiper mySwiperDestaques">
             <div class="swiper-wrapper pt-6 pl-1">
               {#each productsWithQuantity as d (d.id)}
+              
               <div class="swiper-slide rounded-lg flex flex-col">
-                <div class="w-full h-5/12">
+                
+                <div class="w-full h-4/6">
                     <InternalCard idSwiper={"destaque"+d.id} imgList={d.pictures} tag={d.tag}/>
                 </div>
-                <div class="w-full h-3/6 text-center description">
-                    <h3>{d.name}</h3>
+
+                <div class="w-full h-2/6 text-center description">
+                  <div class="sizeSelect w-full hidden h-44 absolute -mt-44 z-40">
+                    <select bind:value={d.uniqueSize} class="w-2/3 max-w-xs px-4 py-2 mt-3 rounded-xl">
+                      <option value="" disabled selected>Tamanho</option>
+
+                      {#each d.size as s(s.id)}
+                      <option value="{s.size}">{s.size}</option>
+
+                      {/each}
+                 
+                  </select>
+                  <br/>
+                  <button on:click={(event) => handleBuyButtonClick(event, d)} class="buttonBuyFinal font-medium mt-4 px-4 py-2 rounded-3xl bg-black text-white">COMPRAR</button>
+                </div>
+
+                  <a href="/productDetail/destaques/{d.id}" class="productName">
+
+                    <h3 class="inline-block">{d.name}</h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" viewBox="0 0 576 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg>
+                  </a>
                     <h1 class="mt-6">R${d.price}</h1>
                     {#if d.quantity > 0}
                     {d.quantity}
             
                     {/if}
                     <div class="w-full px-2 flex justify-center items-center h-fit relative" style="bottom:-20px;">
-                        <a on:click={() => {d.quantity--}} class="rounded-full p-2 cursor-pointer mr-1"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg></a>
-                        <button on:click={() => addProduct(d)} class="py-2 px-4 xl:px-10 border border-[#183A5D] text-[#183A5D] rounded-xl font-bold transition-all ml-auto mr-auto block relative">ADICIONAR</button>
-                        <a on:click={() => {d.quantity++}} class="rounded-full p-2 cursor-pointer ml-1"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg></a>
+                      <a on:click={() => { d.quantity-- }} class="rounded-full p-2 cursor-pointer mr-1"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32-14.3 32 32z" /></svg></a>
+                      <button on:click={(event) => selectSizeModal(event)} class="py-2 px-4 xl:px-10 border border-[#183A5D] text-[#183A5D] rounded-xl font-bold transition-all ml-auto mr-auto block relative">COMPRAR</button>
+                      <a on:click={() => { d.quantity++ }} class="rounded-full p-2 cursor-pointer ml-1"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7-14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" /></svg></a>
                 </div>
                 </div>
+
               </div>
               {/each}
 
@@ -154,6 +203,17 @@
 </div>
 
 <style>
+  .productName:hover h3{
+    color:rgb(255, 191, 0);
+  }
+
+  .productName:hover svg {
+    fill:rgb(255, 191, 0);
+  }
+
+  .sizeSelect{
+    background-color: rgb(255,255,255, 0.8);
+  }
     .description h3{
         font-family: "Roboto-Light";
     }
@@ -181,5 +241,15 @@
       box-shadow: 0px 0px 5px rgb(0, 0, 0, 0.5);
       height: 90%;
     }
+    button:hover{
+      background-color: black;
+      color:white;
+      border-color: white;
+}
+
+.buttonBuyFinal:hover{
+  background-color: rgb(255, 191, 0);
+  color:black;
+}
 
 </style>

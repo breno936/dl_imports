@@ -24,11 +24,12 @@ export const PUT: RequestHandler = async ({ request }) => {
 
     const id = Number(data.get('id') as string);
     const size = data.get('size') as string;
+    const categorySize = data.get('categorySize') as string;
 
     
     const updateSize = await prisma.sizes.update({
       where:{id},
-      data: { size }
+      data: { size, categorySize }
   
     });
 

@@ -20,10 +20,11 @@ export const POST: RequestHandler = async ({ request }) => {
     const data = await request.formData();
   
     const size = data.get('size') as string;
+    const categorySize = data.get('categorySize') as string;
     
     
     const newSize = await prisma.sizes.create({
-      data: { size }
+      data: { size,categorySize }
   
     });
    

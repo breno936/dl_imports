@@ -37,6 +37,7 @@
 
     productsWithQuantity = productList.map(pro =>({
       ...pro,
+      uniqueSize:"",
       quantity: 0
     }))
 
@@ -55,13 +56,26 @@
     const dataC = await resC.json();
     categoryList = dataC.subCategories;
 
-    const resSize = await fetch("/api/size/getAll", {
+    if(id == "3" || id == "1"){
+
+      const resSize = await fetch("/api/size/getAllCalcado", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     const dataSize = await resSize.json();
     sizeList = dataSize.sizes;
+
+    }else{
+    const resSize = await fetch("/api/size/getAllRoupa", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const dataSize = await resSize.json();
+    sizeList = dataSize.sizes;
+    }
+
   });
 
   async function getSubCategory(idSub:number, idSize:any, orderPrice:string){
@@ -108,30 +122,60 @@
     const data = await res.json();
     productList = data.products;
     console.log(productList);
-    productsWithQuantity = productList;
-  
+    productsWithQuantity = productList.map(pro =>({
+      ...pro,
+      uniqueSize:"",
+      quantity: 0
+    }))
   }
 
 
 
-function addProduct(prod:any){
-  const productExists = $cartProducts.some(product => product.id === prod.id);
 
-  if(productExists){
+  function selectSizeModal(event) {
+    const sizeSelect = event.currentTarget.closest('.description').querySelector('.sizeSelect select');
+    sizeSelect.parentElement.classList.toggle('hidden');
+  }
 
-  $cartProducts = $cartProducts.map(product => {
-  if (product.id === prod.id) {
-    return { ...product, quantity: product.quantity + prod.quantity };
-  } else {
-    return product;
+  function handleBuyButtonClick(event, product) {
+
+    if (product.uniqueSize !== "" && product.quantity >= 1) {
+      const prodWithSize = { ...product, size: product.uniqueSize, quantity: 1 };
+      addProduct(prodWithSize);
+    } else {
+      document.getElementById("errorQuantity").style.top = "10px";
+      setTimeout(() => {
+        document.getElementById("errorQuantity").style.top = "-8rem";
+
+      }, 2000);
+    }
   }
-});
-  }else{
-  $cartProducts = [...$cartProducts, prod];
+
+
+      function addProduct(prod) {
+    let productExists = false;
+
+    $cartProducts = $cartProducts.map(product => {
+      if (product.id === prod.id && product.size === prod.size) {
+        productExists = true;
+        return { ...product, quantity: product.quantity + prod.quantity };
+      } else {
+        return product;
+      }
+    });
+
+    if (!productExists) {
+      $cartProducts = [...$cartProducts, prod];
+    }
+
+    localStorage.setItem("cartProducts", JSON.stringify($cartProducts));
+
+    document.getElementById("alertAdd").style.top = "10px";
+      setTimeout(() => {
+        document.getElementById("alertAdd").style.top = "-8rem";
+
+      }, 2000);
   }
-  
-  localStorage.setItem("cartProducts", JSON.stringify($cartProducts));
-}
 
   </script>
   
@@ -390,22 +434,39 @@ function addProduct(prod:any){
           <div class="lg:col-span-3">
             <div class="flex mt-10 h-fit w-full justify-evenly gap-x-1 gap-y-8 flex-wrap">
               {#each productsWithQuantity as p (p.id)}
-              <div class="max-[300px]:w-[85%] max-[470px]:w-[70%] w-[50%] sm:w-[40%] md:w-[30%] h-[430px] sm:h-[460px] md:h-[440px] lg:h-[480px] relative">
+              <div class="max-[300px]:w-[85%] max-[470px]:w-[70%] w-[50%] sm:w-[40%] md:w-[30%] h-[430px] sm:h-[460px] md:h-[440px] lg:h-[510px] relative">
                 <div class="card-product h-full rounded-lg flex flex-col">
-                  <div class="w-full h-1/2 sm:h-3/5 md:h-3/5 lg:h-5/6 xl:h-5/12 block relative">
+                  <div class="w-full h-1/2 sm:h-3/5 md:h-3/5 lg:h-5/6 xl:h-4/6 block relative">
                       <InternalCard idSwiper={"product"+p.id} imgList={p.pictures} tag={p.tag}/>
                   </div>
-                  <div class="w-full h-5/6 sm:h-4/6 md:h-4/6 lg:h-3/6 xl:h-3/6 block relative text-center description">
-                      <h3>{p.name}</h3>
-                      <h1 class="mt-6">R${p.price}</h1>
+                  <div class="w-full h-5/6 sm:h-4/6 md:h-4/6 lg:h-3/6 xl:h-2/6 block relative text-center description">
+                    <div class="sizeSelect w-full hidden h-44 absolute -mt-44 z-40">
+                      <select bind:value={p.uniqueSize} class="w-2/3 max-w-xs px-4 py-2 mt-3 rounded-xl">
+                        <option value="" disabled selected>Tamanho</option>
+  
+                        {#each p.size as s(s.id)}
+                        <option value="{s.size}">{s.size}</option>
+  
+                        {/each}
+                   
+                    </select>
+                    <br/>
+                    <button on:click={(event) => handleBuyButtonClick(event, p)} class="buttonBuyFinal font-medium mt-4 px-4 py-2 rounded-3xl bg-black text-white">COMPRAR</button>
+                   </div>
+                    <a href="/productDetail/destaques/{p.id}" class="productName">
+
+                      <h3 class="inline-block">{p.name}</h3>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" viewBox="0 0 576 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg>
+                    </a>
+                    <h1 class="mt-6">R${p.price}</h1>
                       {#if p.quantity > 0}
                       {p.quantity}
               
                       {/if}
-                      <div class="w-full px-2 flex justify-center items-center h-fit relative" style="bottom:-20px;">
-                          <a on:click={() => {p.quantity--}} class="rounded-full p-2 cursor-pointer mr-1"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg></a>
-                          <button on:click={() => addProduct(p)} class="py-2 px-4 xl:px-10 border border-[#183A5D] text-[#183A5D] addButton rounded-xl font-bold transition-all ml-auto mr-auto block relative">ADICIONAR</button>
-                          <a on:click={() => {p.quantity++}} class="rounded-full p-2 cursor-pointer ml-1"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg></a>
+                      <div class="w-full px-2 flex justify-center items-center h-fit relative" style="bottom:-5px;">
+                        <a on:click={() => { p.quantity-- }} class="rounded-full p-2 cursor-pointer mr-1"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32-14.3 32 32z" /></svg></a>
+                        <button on:click={(event) => selectSizeModal(event)} class="buttonBuy py-2 px-4 xl:px-10 border border-[#183A5D] text-[#183A5D] rounded-xl font-bold transition-all ml-auto mr-auto block relative">COMPRAR</button>
+                        <a on:click={() => { p.quantity++ }} class="rounded-full p-2 cursor-pointer ml-1"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7-14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" /></svg></a>
                   </div>
                   </div>
                  
@@ -424,6 +485,26 @@ function addProduct(prod:any){
 </div>
 
   <style>
+        .buttonBuy:hover{
+      background-color: black;
+      color:white;
+      border-color: white;
+    }
+
+.buttonBuyFinal:hover{
+  background-color: rgb(255, 191, 0);
+  color:black;
+}
+    .sizeSelect{
+    background-color: rgb(255,255,255, 0.8);
+  }
+      .productName:hover h3{
+    color:rgb(255, 191, 0);
+  }
+
+  .productName:hover svg {
+    fill:rgb(255, 191, 0);
+  }
     .description h3{
         font-family: "Roboto-Light";
     }
